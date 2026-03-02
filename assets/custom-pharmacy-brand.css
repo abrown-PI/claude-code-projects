@@ -1,0 +1,140 @@
+/* Pharmacy Innovations Store - Custom Brand Styling */
+/* Matches pharmacyinnovations.net branding */
+
+/* ============================================
+   NAVIGATION LINK STYLING
+   ============================================ */
+.header .list-menu__item--link:hover,
+.header .header__menu-item:hover {
+  color: rgb(var(--color-button));
+  text-decoration: underline;
+  text-underline-offset: 0.4rem;
+}
+
+/* ============================================
+   BUTTON OVERRIDES - Pill shaped to match main site
+   ============================================ */
+.button,
+.shopify-challenge__button,
+.customer button,
+button.shopify-payment-button__button--unbranded {
+  border-radius: 9999px !important;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  font-size: 1.3rem;
+  font-weight: 600;
+  padding: 1.2rem 3rem;
+}
+
+.button--secondary {
+  border-width: 2px;
+}
+
+/* ============================================
+   PHARMACY BANNER - Link to main site
+   ============================================ */
+.pharmacy-site-link {
+  background-color: #214d6e;
+  color: #ffffff;
+  text-align: center;
+  padding: 0.6rem 1rem;
+  font-size: 1.3rem;
+  letter-spacing: 0.03em;
+}
+
+.pharmacy-site-link a {
+  color: #ffffff;
+  text-decoration: none;
+  font-weight: 500;
+}
+
+.pharmacy-site-link a:hover {
+  text-decoration: underline;
+}
+
+.pharmacy-site-link .icon-arrow {
+  display: inline-block;
+  margin-left: 0.4rem;
+  font-size: 0.9em;
+}
+
+/* ============================================
+   CARD STYLING - Clean, professional
+   ============================================ */
+.card:hover {
+  transform: translateY(-2px);
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.card {
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.card__heading a {
+  font-weight: 600;
+}
+
+/* ============================================
+   PRODUCT PRICE STYLING
+   ============================================ */
+.price-item--regular,
+.price-item--sale {
+  font-weight: 700;
+  color: rgb(var(--color-foreground));
+}
+
+/* ============================================
+   FOOTER CLEAN-UP
+   ============================================ */
+.footer {
+  border-top: 2px solid #2f6e9d;
+}
+
+.footer-block__heading {
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  font-size: 1.4rem;
+}
+
+/* ============================================
+   TAGLINE STYLING
+   ============================================ */
+.pharmacy-tagline {
+  text-align: center;
+  font-size: 1.4rem;
+  font-weight: 500;
+  letter-spacing: 0.08em;
+  color: rgb(var(--color-foreground));
+  padding: 1rem 0;
+  text-transform: uppercase;
+  opacity: 0.8;
+}
+
+/* ============================================
+   SEARCH & INPUT REFINEMENTS
+   ============================================ */
+.field__input {
+  border-radius: 9999px;
+}
+
+.search__input.field__input {
+  border-radius: 9999px;
+}
+
+/* ============================================
+   ANNOUNCEMENT BAR STYLING
+   ============================================ */
+.announcement-bar {
+  letter-spacing: 0.03em;
+}
+
+/* ============================================
+   RESPONSIVE TWEAKS
+   ============================================ */
+@media screen and (max-width: 749px) {
+  .pharmacy-site-link {
+    font-size: 1.1rem;
+    padding: 0.5rem 1rem;
+  }
+}

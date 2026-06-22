@@ -1,0 +1,78 @@
+{
+  "sections": {
+    "nutritional-innovations-landing": {
+      "type": "nutritional-innovations-landing",
+      "settings": {
+        "image_focus": "center",
+        "banner_height": 55,
+        "banner_overlay": 40,
+        "banner_label": "Nutritional Innovations",
+        "banner_title": "<p>Pharmacist-curated<br>supplements,<br>made simple.</p>",
+        "banner_subtitle": "<p>Our in-house line of pharmacist-formulated supplements,<br>designed to take the guesswork out of daily wellness.</p>",
+        "banner_btn": "Shop the Collection",
+        "banner_btn_link": "shopify://collections/nutritional-innovations",
+        "label_size": 12,
+        "title_size": 48,
+        "subtitle_size": 16,
+        "label_color": "#38c6f4",
+        "title_color": "#ffffff",
+        "subtitle_color": "#ffffffd9",
+        "btn_size": 12,
+        "btn_padding": 14,
+        "btn_bg": "rgba(0,0,0,0)",
+        "btn_text_color": "#ffffff",
+        "btn_border": "#2e3192",
+        "intro_tagline": "Quality you trust. Supplements that fit your life.",
+        "intro_heading": "<p>Because wellness should be simple, trusted, and made for you.</p>",
+        "intro_tagline_size": 12,
+        "intro_heading_size": 28,
+        "pillar_number_size": 40,
+        "pillar_title_size": 16,
+        "pillar_text_size": 14,
+        "origin_eyebrow": "Born from our roots",
+        "origin_heading": "<p>Built from a compounding pharmacy's expertise.</p>",
+        "origin_text": "<p>Nutritional Innovations grew out of decades of compounding pharmacy work at Pharmacy Innovations. Every formula reflects the same precision, sourcing standards, and pharmacist oversight we bring to every prescription we prepare. When you choose NI, you're choosing the same care that has served our community for generations.</p>",
+        "origin_eyebrow_size": 13,
+        "origin_heading_size": 26,
+        "origin_text_size": 16,
+        "collection": "nutritional-innovations",
+        "products_to_show": 4,
+        "products_label": "Shop the Line",
+        "products_heading": "Nutritional Innovations Products",
+        "products_label_size": 12,
+        "products_heading_size": 30,
+        "cta_heading": "Questions? Talk to a Pharmacist.",
+        "cta_label": "Contact Us",
+        "cta_link": "/pages/contact"
+      },
+      "blocks": {
+        "pillar-1": {
+          "type": "pillar",
+          "settings": {
+            "number": "01",
+            "title": "Pharmacist-Formulated",
+            "text": "Every product is designed by our pharmacists, held to the same standards as the prescriptions we prepare daily."
+          }
+        },
+        "pillar-2": {
+          "type": "pillar",
+          "settings": {
+            "number": "02",
+            "title": "Targeted Health Goals",
+            "text": "From immunity to recovery to women's health, our formulas are built around real, specific needs."
+          }
+        },
+        "pillar-3": {
+          "type": "pillar",
+          "settings": {
+            "number": "03",
+            "title": "Quality You Can Count On",
+            "text": "Carefully sourced ingredients, transparent labeling, and the credibility of 11 PI pharmacies behind every bottle."
+          }
+        }
+      },
+      "block_order": ["pillar-1", "pillar-2", "pillar-3"]
+    }
+  },
+  "order": ["nutritional-innovations-landing"]
+}

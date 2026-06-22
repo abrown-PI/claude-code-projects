@@ -1,0 +1,420 @@
+{% doc %}
+  @prompt
+    Create a product page section that displays supplement/vitamin product details from metafields. It should show the following metafields from the custom namespace when they have data: supplement_facts, other_ingredients, specifications, directions, key_benefits. Display each in a clean tabbed or accordion layout with section headers. Style should match a premium healthcare/pharmacy brand with a navy blue (#2E3192) and light gray color scheme. Each metafield block should only render if the metafield has a value — hide empty fields automatically. Typography should be clean and clinical.
+{% enddoc %}
+{% assign ai_gen_id = block.id | replace: '_', '' | downcase %}
+
+{% style %}
+  .ai-supplement-details-{{ ai_gen_id }} {
+    display: block;
+    width: {{ block.settings.desktop_width_percent }}%;
+    max-width: 100%;
+    margin: 0 auto;
+    background-color: {{ block.settings.background_color }};
+    border-radius: {{ block.settings.border_radius }}px;
+    padding: {{ block.settings.padding }}px;
+  }
+
+  .ai-supplement-details__tabs-{{ ai_gen_id }} {
+    display: flex;
+    gap: 8px;
+    border-bottom: 1px solid {{ block.settings.border_color }};
+    margin-bottom: 24px;
+    flex-wrap: wrap;
+  }
+
+  .ai-supplement-details__tab-{{ ai_gen_id }} {
+    background: none;
+    border: none;
+    padding: 12px 20px;
+    font-size: 14px;
+    font-weight: 500;
+    color: {{ block.settings.tab_text_color }};
+    cursor: pointer;
+    border-bottom: 2px solid transparent;
+    transition: all 0.3s ease;
+    font-family: inherit;
+  }
+
+  .ai-supplement-details__tab-{{ ai_gen_id }}:hover {
+    color: {{ block.settings.tab_active_color }};
+  }
+
+  .ai-supplement-details__tab-{{ ai_gen_id }}.active {
+    color: {{ block.settings.tab_active_color }};
+    border-bottom-color: {{ block.settings.tab_active_color }};
+  }
+
+  .ai-supplement-details__content-{{ ai_gen_id }} {
+    display: none;
+  }
+
+  .ai-supplement-details__content-{{ ai_gen_id }}.active {
+    display: block;
+  }
+
+  .ai-supplement-details__section-{{ ai_gen_id }} {
+    color: {{ block.settings.text_color }};
+    line-height: 1.6;
+  }
+
+  .ai-supplement-details__section-{{ ai_gen_id }} h3 {
+    font-size: 18px;
+    font-weight: 600;
+    margin: 0 0 16px 0;
+    color: {{ block.settings.heading_color }};
+  }
+
+  .ai-supplement-details__section-{{ ai_gen_id }} p {
+    margin: 0 0 12px 0;
+  }
+
+  .ai-supplement-details__section-{{ ai_gen_id }} ul,
+  .ai-supplement-details__section-{{ ai_gen_id }} ol {
+    margin: 0 0 12px 0;
+    padding-left: 20px;
+  }
+
+  .ai-supplement-details__section-{{ ai_gen_id }} li {
+    margin-bottom: 8px;
+  }
+
+  .ai-supplement-details__empty-{{ ai_gen_id }} {
+    text-align: center;
+    padding: 40px 20px;
+    color: {{ block.settings.empty_text_color }};
+    font-style: italic;
+  }
+
+  @media screen and (max-width: 749px) {
+    .ai-supplement-details__tabs-{{ ai_gen_id }} {
+      overflow-x: auto;
+      flex-wrap: nowrap;
+      -webkit-overflow-scrolling: touch;
+    }
+
+    .ai-supplement-details__tab-{{ ai_gen_id }} {
+      white-space: nowrap;
+      font-size: 13px;
+      padding: 10px 16px;
+    }
+  }
+{% endstyle %}
+
+<supplement-details-{{ ai_gen_id }}
+  class="ai-supplement-details-{{ ai_gen_id }}"
+  {{ block.shopify_attributes }}
+>
+  {% liquid
+    assign supplement_facts = product.metafields.custom.supplement_facts
+    assign other_ingredients = product.metafields.custom.other_ingredients
+    assign specifications = product.metafields.custom.specifications
+    assign directions = product.metafields.custom.directions
+    assign key_benefits = product.metafields.custom.key_benefits
+
+    assign has_content = false
+    if supplement_facts != blank or other_ingredients != blank or specifications != blank or directions != blank or key_benefits != blank
+      assign has_content = true
+    endif
+  %}
+
+  {% if has_content %}
+    <div class="ai-supplement-details__tabs-{{ ai_gen_id }}">
+      {% if key_benefits != blank %}
+        <button
+          class="ai-supplement-details__tab-{{ ai_gen_id }} active"
+          data-tab="key_benefits"
+          aria-selected="true"
+          role="tab"
+        >
+          {{ block.settings.key_benefits_label }}
+        </button>
+      {% endif %}
+
+      {% if supplement_facts != blank %}
+        <button
+          class="ai-supplement-details__tab-{{ ai_gen_id }} {% unless key_benefits != blank %}active{% endunless %}"
+          data-tab="supplement_facts"
+          aria-selected="{% if key_benefits == blank %}true{% else %}false{% endif %}"
+          role="tab"
+        >
+          {{ block.settings.supplement_facts_label }}
+        </button>
+      {% endif %}
+
+      {% if other_ingredients != blank %}
+        <button
+          class="ai-supplement-details__tab-{{ ai_gen_id }} {% if key_benefits == blank and supplement_facts == blank %}active{% endif %}"
+          data-tab="other_ingredients"
+          aria-selected="{% if key_benefits == blank and supplement_facts == blank %}true{% else %}false{% endif %}"
+          role="tab"
+        >
+          {{ block.settings.other_ingredients_label }}
+        </button>
+      {% endif %}
+
+      {% if directions != blank %}
+        <button
+          class="ai-supplement-details__tab-{{ ai_gen_id }} {% if key_benefits == blank and supplement_facts == blank and other_ingredients == blank %}active{% endif %}"
+          data-tab="directions"
+          aria-selected="{% if key_benefits == blank and supplement_facts == blank and other_ingredients == blank %}true{% else %}false{% endif %}"
+          role="tab"
+        >
+          {{ block.settings.directions_label }}
+        </button>
+      {% endif %}
+
+      {% if specifications != blank %}
+        <button
+          class="ai-supplement-details__tab-{{ ai_gen_id }} {% if key_benefits == blank and supplement_facts == blank and other_ingredients == blank and directions == blank %}active{% endif %}"
+          data-tab="specifications"
+          aria-selected="{% if key_benefits == blank and supplement_facts == blank and other_ingredients == blank and directions == blank %}true{% else %}false{% endif %}"
+          role="tab"
+        >
+          {{ block.settings.specifications_label }}
+        </button>
+      {% endif %}
+    </div>
+
+    <div class="ai-supplement-details__panels-{{ ai_gen_id }}">
+      {% if key_benefits != blank %}
+        <div
+          class="ai-supplement-details__content-{{ ai_gen_id }} active"
+          data-content="key_benefits"
+          role="tabpanel"
+        >
+          <div class="ai-supplement-details__section-{{ ai_gen_id }}">
+            {{ key_benefits }}
+          </div>
+        </div>
+      {% endif %}
+
+      {% if supplement_facts != blank %}
+        <div
+          class="ai-supplement-details__content-{{ ai_gen_id }} {% unless key_benefits != blank %}active{% endunless %}"
+          data-content="supplement_facts"
+          role="tabpanel"
+        >
+          <div class="ai-supplement-details__section-{{ ai_gen_id }}">
+            {{ supplement_facts }}
+          </div>
+        </div>
+      {% endif %}
+
+      {% if other_ingredients != blank %}
+        <div
+          class="ai-supplement-details__content-{{ ai_gen_id }} {% if key_benefits == blank and supplement_facts == blank %}active{% endif %}"
+          data-content="other_ingredients"
+          role="tabpanel"
+        >
+          <div class="ai-supplement-details__section-{{ ai_gen_id }}">
+            {{ other_ingredients }}
+          </div>
+        </div>
+      {% endif %}
+
+      {% if directions != blank %}
+        <div
+          class="ai-supplement-details__content-{{ ai_gen_id }} {% if key_benefits == blank and supplement_facts == blank and other_ingredients == blank %}active{% endif %}"
+          data-content="directions"
+          role="tabpanel"
+        >
+          <div class="ai-supplement-details__section-{{ ai_gen_id }}">
+            {{ directions }}
+          </div>
+        </div>
+      {% endif %}
+
+      {% if specifications != blank %}
+        <div
+          class="ai-supplement-details__content-{{ ai_gen_id }} {% if key_benefits == blank and supplement_facts == blank and other_ingredients == blank and directions == blank %}active{% endif %}"
+          data-content="specifications"
+          role="tabpanel"
+        >
+          <div class="ai-supplement-details__section-{{ ai_gen_id }}">
+            {{ specifications }}
+          </div>
+        </div>
+      {% endif %}
+    </div>
+  {% else %}
+    <div class="ai-supplement-details__empty-{{ ai_gen_id }}">
+      Next, add supplement details using product metafields
+    </div>
+  {% endif %}
+</supplement-details-{{ ai_gen_id }}>
+
+<script>
+  (function() {
+    class SupplementDetails{{ ai_gen_id }} extends HTMLElement {
+      constructor() {
+        super();
+      }
+
+      connectedCallback() {
+        this.tabs = this.querySelectorAll('.ai-supplement-details__tab-{{ ai_gen_id }}');
+        this.contents = this.querySelectorAll('.ai-supplement-details__content-{{ ai_gen_id }}');
+        this.setupEventListeners();
+      }
+
+      setupEventListeners() {
+        this.tabs.forEach((tab) => {
+          tab.addEventListener('click', () => {
+            const targetTab = tab.getAttribute('data-tab');
+            this.switchTab(targetTab);
+          });
+        });
+      }
+
+      switchTab(targetTab) {
+        this.tabs.forEach((tab) => {
+          if (tab.getAttribute('data-tab') === targetTab) {
+            tab.classList.add('active');
+            tab.setAttribute('aria-selected', 'true');
+          } else {
+            tab.classList.remove('active');
+            tab.setAttribute('aria-selected', 'false');
+          }
+        });
+
+        this.contents.forEach((content) => {
+          if (content.getAttribute('data-content') === targetTab) {
+            content.classList.add('active');
+          } else {
+            content.classList.remove('active');
+          }
+        });
+      }
+    }
+
+    customElements.define('supplement-details-{{ ai_gen_id }}', SupplementDetails{{ ai_gen_id }});
+  })();
+</script>
+
+{% schema %}
+{
+  "name": "Supplement details",
+  "tag": null,
+  "settings": [
+    {
+      "type": "header",
+      "content": "Tab labels"
+    },
+    {
+      "type": "text",
+      "id": "key_benefits_label",
+      "label": "Key benefits label",
+      "default": "Key Benefits"
+    },
+    {
+      "type": "text",
+      "id": "supplement_facts_label",
+      "label": "Supplement facts label",
+      "default": "Supplement Facts"
+    },
+    {
+      "type": "text",
+      "id": "other_ingredients_label",
+      "label": "Other ingredients label",
+      "default": "Other Ingredients"
+    },
+    {
+      "type": "text",
+      "id": "directions_label",
+      "label": "Directions label",
+      "default": "Directions"
+    },
+    {
+      "type": "text",
+      "id": "specifications_label",
+      "label": "Specifications label",
+      "default": "Specifications"
+    },
+    {
+      "type": "header",
+      "content": "Style"
+    },
+    {
+      "type": "range",
+      "id": "desktop_width_percent",
+      "label": "Desktop width",
+      "min": 50,
+      "max": 100,
+      "step": 5,
+      "unit": "%",
+      "default": 100
+    },
+    {
+      "type": "range",
+      "id": "padding",
+      "label": "Padding",
+      "min": 0,
+      "max": 60,
+      "step": 4,
+      "unit": "px",
+      "default": 32
+    },
+    {
+      "type": "range",
+      "id": "border_radius",
+      "label": "Border radius",
+      "min": 0,
+      "max": 40,
+      "step": 2,
+      "unit": "px",
+      "default": 8
+    },
+    {
+      "type": "header",
+      "content": "Colors"
+    },
+    {
+      "type": "color",
+      "id": "background_color",
+      "label": "Background",
+      "default": "#ffffff"
+    },
+    {
+      "type": "color",
+      "id": "border_color",
+      "label": "Border",
+      "default": "#e5e5e5"
+    },
+    {
+      "type": "color",
+      "id": "tab_text_color",
+      "label": "Tab text",
+      "default": "#666666"
+    },
+    {
+      "type": "color",
+      "id": "tab_active_color",
+      "label": "Tab active",
+      "default": "#2E3192"
+    },
+    {
+      "type": "color",
+      "id": "heading_color",
+      "label": "Heading",
+      "default": "#2E3192"
+    },
+    {
+      "type": "color",
+      "id": "text_color",
+      "label": "Text",
+      "default": "#323234"
+    },
+    {
+      "type": "color",
+      "id": "empty_text_color",
+      "label": "Empty state text",
+      "default": "#999999"
+    }
+  ],
+  "presets": [
+    {
+      "name": "Supplement details"
+    }
+  ]
+}
+{% endschema %}

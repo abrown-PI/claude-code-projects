@@ -1,0 +1,438 @@
+{% doc %}
+  @prompt
+    Create a product page section that displays a Supplement Facts panel styled like an FDA nutrition label table. Pull data from the custom namespace metafield supplement_facts (rich text field). Display it in a bordered table with two columns: Ingredient and Amount Per Serving. Also show other_ingredients, directions, specifications, and key_benefits metafields below the table in a clean accordion. Use navy blue (#2E3192) for headers and a light gray/white clinical aesthetic. Hide any block where the metafield has no value. Typography should be clean and clinical, matching a premium pharmacy brand.
+{% enddoc %}
+{% assign ai_gen_id = block.id | replace: '_', '' | downcase %}
+
+{% style %}
+  .ai-supplement-facts-{{ ai_gen_id }} {
+    display: block;
+    width: {{ block.settings.desktop_width_percent }}%;
+    max-width: 100%;
+    margin: 0 auto;
+    padding: 40px 20px;
+    background-color: {{ block.settings.background_color }};
+  }
+
+  .ai-supplement-facts-container-{{ ai_gen_id }} {
+    max-width: 600px;
+    margin: 0 auto;
+  }
+
+  .ai-supplement-facts-title-{{ ai_gen_id }} {
+    font-size: {{ block.settings.title_size }}px;
+    font-weight: 700;
+    color: {{ block.settings.header_color }};
+    margin: 0 0 24px;
+    text-align: center;
+    letter-spacing: -0.5px;
+  }
+
+  .ai-supplement-facts-table-{{ ai_gen_id }} {
+    width: 100%;
+    border-collapse: collapse;
+    border: 2px solid {{ block.settings.border_color }};
+    background-color: {{ block.settings.table_background }};
+    margin-bottom: 32px;
+    font-family: Arial, sans-serif;
+  }
+
+  .ai-supplement-facts-table-{{ ai_gen_id }} th {
+    background-color: {{ block.settings.header_color }};
+    color: {{ block.settings.header_text_color }};
+    padding: 12px 16px;
+    text-align: left;
+    font-size: 14px;
+    font-weight: 600;
+    border-bottom: 2px solid {{ block.settings.border_color }};
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+  }
+
+  .ai-supplement-facts-table-{{ ai_gen_id }} td {
+    padding: 12px 16px;
+    border-bottom: 1px solid {{ block.settings.border_color }};
+    font-size: 14px;
+    color: {{ block.settings.text_color }};
+    line-height: 1.5;
+  }
+
+  .ai-supplement-facts-table-{{ ai_gen_id }} tr:last-child td {
+    border-bottom: none;
+  }
+
+  .ai-supplement-facts-table-{{ ai_gen_id }} td:first-child {
+    font-weight: 500;
+  }
+
+  .ai-supplement-facts-table-{{ ai_gen_id }} td:last-child {
+    text-align: right;
+    font-weight: 600;
+  }
+
+  .ai-supplement-facts-accordion-{{ ai_gen_id }} {
+    border: 1px solid {{ block.settings.border_color }};
+    border-radius: 8px;
+    overflow: hidden;
+  }
+
+  .ai-supplement-facts-accordion-item-{{ ai_gen_id }} {
+    border-bottom: 1px solid {{ block.settings.border_color }};
+  }
+
+  .ai-supplement-facts-accordion-item-{{ ai_gen_id }}:last-child {
+    border-bottom: none;
+  }
+
+  .ai-supplement-facts-accordion-button-{{ ai_gen_id }} {
+    width: 100%;
+    padding: 16px 20px;
+    background-color: {{ block.settings.accordion_header_bg }};
+    border: none;
+    text-align: left;
+    cursor: pointer;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 16px;
+    font-weight: 600;
+    color: {{ block.settings.header_color }};
+    transition: background-color 0.3s ease;
+  }
+
+  .ai-supplement-facts-accordion-button-{{ ai_gen_id }}:hover {
+    background-color: {{ block.settings.accordion_header_hover }};
+  }
+
+  .ai-supplement-facts-accordion-icon-{{ ai_gen_id }} {
+    width: 20px;
+    height: 20px;
+    transition: transform 0.3s ease;
+    flex-shrink: 0;
+    margin-left: 12px;
+  }
+
+  .ai-supplement-facts-accordion-icon-{{ ai_gen_id }} svg {
+    width: 100%;
+    height: 100%;
+    stroke: {{ block.settings.header_color }};
+  }
+
+  .ai-supplement-facts-accordion-button-{{ ai_gen_id }}[aria-expanded="true"] .ai-supplement-facts-accordion-icon-{{ ai_gen_id }} {
+    transform: rotate(180deg);
+  }
+
+  .ai-supplement-facts-accordion-content-{{ ai_gen_id }} {
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height 0.3s ease;
+  }
+
+  .ai-supplement-facts-accordion-content-{{ ai_gen_id }}.active {
+    max-height: 1000px;
+  }
+
+  .ai-supplement-facts-accordion-body-{{ ai_gen_id }} {
+    padding: 20px;
+    background-color: {{ block.settings.table_background }};
+    font-size: 14px;
+    line-height: 1.7;
+    color: {{ block.settings.text_color }};
+  }
+
+  .ai-supplement-facts-accordion-body-{{ ai_gen_id }} p {
+    margin: 0 0 12px;
+  }
+
+  .ai-supplement-facts-accordion-body-{{ ai_gen_id }} p:last-child {
+    margin-bottom: 0;
+  }
+
+  .ai-supplement-facts-accordion-body-{{ ai_gen_id }} ul,
+  .ai-supplement-facts-accordion-body-{{ ai_gen_id }} ol {
+    margin: 0 0 12px;
+    padding-left: 20px;
+  }
+
+  .ai-supplement-facts-accordion-body-{{ ai_gen_id }} li {
+    margin-bottom: 8px;
+  }
+
+  @media screen and (max-width: 749px) {
+    .ai-supplement-facts-{{ ai_gen_id }} {
+      padding: 24px 16px;
+    }
+
+    .ai-supplement-facts-title-{{ ai_gen_id }} {
+      font-size: {{ block.settings.title_size | times: 0.8 }}px;
+    }
+
+    .ai-supplement-facts-table-{{ ai_gen_id }} th,
+    .ai-supplement-facts-table-{{ ai_gen_id }} td {
+      padding: 10px 12px;
+      font-size: 13px;
+    }
+
+    .ai-supplement-facts-accordion-button-{{ ai_gen_id }} {
+      padding: 14px 16px;
+      font-size: 15px;
+    }
+
+    .ai-supplement-facts-accordion-body-{{ ai_gen_id }} {
+      padding: 16px;
+      font-size: 13px;
+    }
+  }
+{% endstyle %}
+
+<supplement-facts-{{ ai_gen_id }} class="ai-supplement-facts-{{ ai_gen_id }}" {{ block.shopify_attributes }}>
+  <div class="ai-supplement-facts-container-{{ ai_gen_id }}">
+    {% if block.settings.section_title != blank %}
+      <h2 class="ai-supplement-facts-title-{{ ai_gen_id }}">{{ block.settings.section_title }}</h2>
+    {% endif %}
+
+    {% if product.metafields.custom.supplement_facts != blank %}
+      <table class="ai-supplement-facts-table-{{ ai_gen_id }}">
+        <thead>
+          <tr>
+            <th>Ingredient</th>
+            <th>Amount Per Serving</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% assign facts_content = product.metafields.custom.supplement_facts %}
+          {% assign rows = facts_content | split: '</p>' %}
+          {% for row in rows %}
+            {% if row contains '<p>' %}
+              {% assign clean_row = row | replace: '<p>', '' | strip %}
+              {% if clean_row != blank %}
+                {% assign parts = clean_row | split: '|' %}
+                {% if parts.size == 2 %}
+                  <tr>
+                    <td>{{ parts[0] | strip }}</td>
+                    <td>{{ parts[1] | strip }}</td>
+                  </tr>
+                {% endif %}
+              {% endif %}
+            {% endif %}
+          {% endfor %}
+        </tbody>
+      </table>
+    {% endif %}
+
+    <div class="ai-supplement-facts-accordion-{{ ai_gen_id }}">
+      {% if product.metafields.custom.key_benefits != blank %}
+        <div class="ai-supplement-facts-accordion-item-{{ ai_gen_id }}">
+          <button
+            class="ai-supplement-facts-accordion-button-{{ ai_gen_id }}"
+            aria-expanded="false"
+            data-accordion-trigger
+          >
+            <span>Key Benefits</span>
+            <span class="ai-supplement-facts-accordion-icon-{{ ai_gen_id }}">
+              <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <polyline points="6 9 12 15 18 9"></polyline>
+              </svg>
+            </span>
+          </button>
+          <div class="ai-supplement-facts-accordion-content-{{ ai_gen_id }}">
+            <div class="ai-supplement-facts-accordion-body-{{ ai_gen_id }}">
+              {{ product.metafields.custom.key_benefits }}
+            </div>
+          </div>
+        </div>
+      {% endif %}
+
+      {% if product.metafields.custom.directions != blank %}
+        <div class="ai-supplement-facts-accordion-item-{{ ai_gen_id }}">
+          <button
+            class="ai-supplement-facts-accordion-button-{{ ai_gen_id }}"
+            aria-expanded="false"
+            data-accordion-trigger
+          >
+            <span>Directions</span>
+            <span class="ai-supplement-facts-accordion-icon-{{ ai_gen_id }}">
+              <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <polyline points="6 9 12 15 18 9"></polyline>
+              </svg>
+            </span>
+          </button>
+          <div class="ai-supplement-facts-accordion-content-{{ ai_gen_id }}">
+            <div class="ai-supplement-facts-accordion-body-{{ ai_gen_id }}">
+              {{ product.metafields.custom.directions }}
+            </div>
+          </div>
+        </div>
+      {% endif %}
+
+      {% if product.metafields.custom.other_ingredients != blank %}
+        <div class="ai-supplement-facts-accordion-item-{{ ai_gen_id }}">
+          <button
+            class="ai-supplement-facts-accordion-button-{{ ai_gen_id }}"
+            aria-expanded="false"
+            data-accordion-trigger
+          >
+            <span>Other Ingredients</span>
+            <span class="ai-supplement-facts-accordion-icon-{{ ai_gen_id }}">
+              <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <polyline points="6 9 12 15 18 9"></polyline>
+              </svg>
+            </span>
+          </button>
+          <div class="ai-supplement-facts-accordion-content-{{ ai_gen_id }}">
+            <div class="ai-supplement-facts-accordion-body-{{ ai_gen_id }}">
+              {{ product.metafields.custom.other_ingredients }}
+            </div>
+          </div>
+        </div>
+      {% endif %}
+
+      {% if product.metafields.custom.specifications != blank %}
+        <div class="ai-supplement-facts-accordion-item-{{ ai_gen_id }}">
+          <button
+            class="ai-supplement-facts-accordion-button-{{ ai_gen_id }}"
+            aria-expanded="false"
+            data-accordion-trigger
+          >
+            <span>Specifications</span>
+            <span class="ai-supplement-facts-accordion-icon-{{ ai_gen_id }}">
+              <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <polyline points="6 9 12 15 18 9"></polyline>
+              </svg>
+            </span>
+          </button>
+          <div class="ai-supplement-facts-accordion-content-{{ ai_gen_id }}">
+            <div class="ai-supplement-facts-accordion-body-{{ ai_gen_id }}">
+              {{ product.metafields.custom.specifications }}
+            </div>
+          </div>
+        </div>
+      {% endif %}
+    </div>
+  </div>
+</supplement-facts-{{ ai_gen_id }}>
+
+<script>
+  (function() {
+    class SupplementFacts{{ ai_gen_id }} extends HTMLElement {
+      constructor() {
+        super();
+      }
+
+      connectedCallback() {
+        this.accordionButtons = this.querySelectorAll('[data-accordion-trigger]');
+        this.setupAccordion();
+      }
+
+      setupAccordion() {
+        this.accordionButtons.forEach((button) => {
+          button.addEventListener('click', () => {
+            const isExpanded = button.getAttribute('aria-expanded') === 'true';
+            const content = button.nextElementSibling;
+
+            button.setAttribute('aria-expanded', !isExpanded);
+            content.classList.toggle('active');
+          });
+        });
+      }
+    }
+
+    customElements.define('supplement-facts-{{ ai_gen_id }}', SupplementFacts{{ ai_gen_id }});
+  })();
+</script>
+
+{% schema %}
+{
+  "name": "Supplement facts",
+  "tag": null,
+  "settings": [
+    {
+      "type": "header",
+      "content": "Section"
+    },
+    {
+      "type": "text",
+      "id": "section_title",
+      "label": "Section title",
+      "default": "Supplement Facts"
+    },
+    {
+      "type": "range",
+      "id": "title_size",
+      "label": "Title size",
+      "min": 18,
+      "max": 48,
+      "step": 2,
+      "unit": "px",
+      "default": 32
+    },
+    {
+      "type": "range",
+      "id": "desktop_width_percent",
+      "label": "Desktop width",
+      "min": 50,
+      "max": 100,
+      "step": 5,
+      "unit": "%",
+      "default": 100
+    },
+    {
+      "type": "header",
+      "content": "Colors"
+    },
+    {
+      "type": "color",
+      "id": "background_color",
+      "label": "Background",
+      "default": "#ffffff"
+    },
+    {
+      "type": "color",
+      "id": "header_color",
+      "label": "Header",
+      "default": "#2E3192"
+    },
+    {
+      "type": "color",
+      "id": "header_text_color",
+      "label": "Header text",
+      "default": "#ffffff"
+    },
+    {
+      "type": "color",
+      "id": "text_color",
+      "label": "Text",
+      "default": "#323234"
+    },
+    {
+      "type": "color",
+      "id": "border_color",
+      "label": "Border",
+      "default": "#d1d1d1"
+    },
+    {
+      "type": "color",
+      "id": "table_background",
+      "label": "Table background",
+      "default": "#ffffff"
+    },
+    {
+      "type": "color",
+      "id": "accordion_header_bg",
+      "label": "Accordion header background",
+      "default": "#f8f8f8"
+    },
+    {
+      "type": "color",
+      "id": "accordion_header_hover",
+      "label": "Accordion header hover",
+      "default": "#eeeeee"
+    }
+  ],
+  "presets": [
+    {
+      "name": "Supplement facts"
+    }
+  ]
+}
+{% endschema %}

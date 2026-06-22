@@ -1,0 +1,100 @@
+<section class="trust-strip" style="background:{{ section.settings.bg_color }};padding-top:{{ section.settings.padding_top }}px;padding-bottom:{{ section.settings.padding_bottom }}px;">
+  <div class="trust-strip__inner" style="grid-template-columns:repeat({{ section.settings.columns }},1fr);">
+    {%- for block in section.blocks -%}
+      <div class="trust-strip__item" {{ block.shopify_attributes }}>
+        <div class="trust-strip__icon" style="color:{{ section.settings.icon_color }};">
+          {%- case block.settings.icon -%}
+            {%- when 'pill' -%}
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="9" width="20" height="6" rx="3"/><path d="M12 9v6"/></svg>
+            {%- when 'shield' -%}
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/><path d="m9 12 2 2 4-4"/></svg>
+            {%- when 'truck' -%}
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 18H3V6h13v12"/><path d="M16 9h4l3 4v5h-3"/><circle cx="7.5" cy="18.5" r="2.5"/><circle cx="17.5" cy="18.5" r="2.5"/></svg>
+            {%- when 'building' -%}
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 21h18M5 21V7l8-4 8 4v14M9 9h.01M13 9h.01M9 13h.01M13 13h.01M9 17h.01M13 17h.01"/></svg>
+            {%- when 'leaf' -%}
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M11 20A7 7 0 0 1 9.8 6.1C15.5 5 17 4.48 19.2 2.96 19.2 8 19 12 11 20Z"/><path d="M2 21c0-3 1.85-5.36 5.08-6"/></svg>
+            {%- when 'heart' -%}
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 14c1.49-1.46 3-3.21 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.76 0-3 .5-4.5 2-1.5-1.5-2.74-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.3 1.5 4.05 3 5.5l7 7Z"/></svg>
+            {%- when 'check' -%}
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="m9 12 2 2 4-4"/></svg>
+            {%- when 'chat' -%}
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+          {%- endcase -%}
+        </div>
+        {%- if block.settings.heading != blank -%}
+          <div class="trust-strip__heading" style="color:{{ section.settings.text_color }};">{{ block.settings.heading }}</div>
+        {%- endif -%}
+        {%- if block.settings.subtitle != blank -%}
+          <div class="trust-strip__sub" style="color:{{ section.settings.text_color }};">{{ block.settings.subtitle }}</div>
+        {%- endif -%}
+      </div>
+    {%- endfor -%}
+  </div>
+</section>
+
+{%- style -%}
+  .trust-strip__inner { max-width: 1200px; margin: 0 auto; display: grid; gap: 1.5rem; padding: 0 2rem; }
+  .trust-strip__item { display: flex; flex-direction: column; align-items: center; text-align: center; gap: 0.5rem; }
+  .trust-strip__icon { width: 36px; height: 36px; opacity: 0.9; }
+  .trust-strip__icon svg { width: 100%; height: 100%; display: block; }
+  .trust-strip__heading { font-weight: 600; font-size: 0.95rem; letter-spacing: 0.02em; }
+  .trust-strip__sub { font-size: 0.8rem; opacity: 0.7; }
+  @media (max-width: 749px) {
+    .trust-strip__inner { grid-template-columns: repeat(2, 1fr) !important; }
+  }
+{%- endstyle -%}
+
+{% schema %}
+{
+  "name": "Trust Strip",
+  "settings": [
+    { "type": "header", "content": "Layout" },
+    { "type": "range", "id": "columns", "label": "Columns (desktop)", "min": 2, "max": 6, "step": 1, "default": 4 },
+    { "type": "range", "id": "padding_top", "label": "Padding top (px)", "min": 0, "max": 80, "step": 4, "default": 24 },
+    { "type": "range", "id": "padding_bottom", "label": "Padding bottom (px)", "min": 0, "max": 80, "step": 4, "default": 24 },
+    { "type": "header", "content": "Colors" },
+    { "type": "color", "id": "bg_color", "label": "Background", "default": "#ffffff" },
+    { "type": "color", "id": "text_color", "label": "Text", "default": "#1a1a1a" },
+    { "type": "color", "id": "icon_color", "label": "Icon", "default": "#2e3192" }
+  ],
+  "blocks": [
+    {
+      "type": "item",
+      "name": "Trust item",
+      "settings": [
+        {
+          "type": "select",
+          "id": "icon",
+          "label": "Icon",
+          "options": [
+            { "value": "pill", "label": "Pill / Capsule" },
+            { "value": "shield", "label": "Shield (trust)" },
+            { "value": "truck", "label": "Truck (shipping)" },
+            { "value": "building", "label": "Building (pharmacy)" },
+            { "value": "leaf", "label": "Leaf (natural)" },
+            { "value": "heart", "label": "Heart (care)" },
+            { "value": "check", "label": "Checkmark" },
+            { "value": "chat", "label": "Chat (consult)" }
+          ],
+          "default": "check"
+        },
+        { "type": "text", "id": "heading", "label": "Heading", "default": "Trust item" },
+        { "type": "text", "id": "subtitle", "label": "Subtitle (optional)" }
+      ]
+    }
+  ],
+  "max_blocks": 6,
+  "presets": [
+    {
+      "name": "Trust Strip",
+      "blocks": [
+        { "type": "item", "settings": { "icon": "pill", "heading": "Pharmacist-Curated" } },
+        { "type": "item", "settings": { "icon": "shield", "heading": "Trusted Brands" } },
+        { "type": "item", "settings": { "icon": "building", "heading": "Backed by 11 PI Pharmacies" } },
+        { "type": "item", "settings": { "icon": "truck", "heading": "Free Shipping Over $50" } }
+      ]
+    }
+  ]
+}
+{% endschema %}

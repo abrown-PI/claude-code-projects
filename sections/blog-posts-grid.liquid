@@ -1,0 +1,128 @@
+{%- assign blog = blogs[section.settings.blog] -%}
+
+<section class="bpg" style="background:{{ section.settings.bg_color }};padding-top:{{ section.settings.padding_top }}px;padding-bottom:{{ section.settings.padding_bottom }}px;">
+  <div class="bpg__inner">
+    <div class="bpg__header">
+      {%- if section.settings.eyebrow != blank -%}
+        <p class="bpg__eyebrow" style="color:{{ section.settings.accent_color }};font-size:{{ section.settings.eyebrow_size }}px;">{{ section.settings.eyebrow }}</p>
+      {%- endif -%}
+      {%- if section.settings.heading != blank -%}
+        <h2 class="bpg__heading" style="color:{{ section.settings.heading_color }};font-size:{{ section.settings.heading_size }}px;">{{ section.settings.heading }}</h2>
+      {%- endif -%}
+    </div>
+
+    {%- if blog != blank and blog.articles.size > 0 -%}
+      <div class="bpg__grid" style="grid-template-columns:repeat({{ section.settings.columns }},1fr);">
+        {%- for article in blog.articles limit: section.settings.posts_to_show -%}
+          <a href="{{ article.url }}" class="bpg__card" style="background:{{ section.settings.card_bg }};--bpg-hover:{{ section.settings.hover_color }};">
+            <div class="bpg__img-wrap">
+              {%- if article.image -%}
+                {{ article.image | image_url: width: 800 | image_tag: loading: 'lazy', alt: article.title, class: 'bpg__img' }}
+              {%- else -%}
+                <div class="bpg__img-placeholder" style="background:{{ section.settings.accent_color }};opacity:0.08;"></div>
+              {%- endif -%}
+            </div>
+            <div class="bpg__body">
+              {%- if section.settings.show_date -%}
+                <p class="bpg__date" style="color:{{ section.settings.meta_color }};">{{ article.published_at | date: "%B %-d, %Y" }}</p>
+              {%- endif -%}
+              <h3 class="bpg__title" style="color:{{ section.settings.text_color }};">{{ article.title }}</h3>
+              {%- if section.settings.show_excerpt -%}
+                {%- assign excerpt = article.excerpt_or_content | strip_html | truncate: 160 -%}
+                <p class="bpg__excerpt" style="color:{{ section.settings.meta_color }};">{{ excerpt }}</p>
+              {%- endif -%}
+              {%- if section.settings.readmore_label != blank -%}
+                <span class="bpg__readmore" style="color:{{ section.settings.accent_color }};">{{ section.settings.readmore_label }} <span class="bpg__arrow">&rarr;</span></span>
+              {%- endif -%}
+            </div>
+          </a>
+        {%- endfor -%}
+      </div>
+
+      {%- if section.settings.show_view_all and section.settings.view_all_label != blank -%}
+        <div class="bpg__view-all">
+          <a href="{{ blog.url }}" class="bpg__btn" style="background:{{ section.settings.btn_bg }};color:{{ section.settings.btn_text }} !important;--color-brand-navy:{{ section.settings.btn_text }};--bpg-hover:{{ section.settings.hover_color }};">{{ section.settings.view_all_label }}</a>
+        </div>
+      {%- endif -%}
+    {%- else -%}
+      <p class="bpg__empty" style="color:{{ section.settings.meta_color }};">No blog posts yet. Once you publish your first article, it will appear here.</p>
+    {%- endif -%}
+  </div>
+</section>
+
+{%- style -%}
+  .bpg__inner { max-width: 1200px; margin: 0 auto; padding: 0 2rem; }
+  .bpg__header { text-align: center; margin-bottom: 2.5rem; }
+  .bpg__eyebrow { letter-spacing: 0.2em; text-transform: uppercase; font-weight: 600; margin: 0 0 0.75rem; }
+  .bpg__heading { font-weight: 700; line-height: 1.2; margin: 0; }
+  .bpg__grid { display: grid; gap: 2rem; }
+  .bpg__card { display: flex; flex-direction: column; text-decoration: none; color: inherit; border: 1px solid rgba(0,0,0,0.06); border-radius: 8px; overflow: hidden; transition: box-shadow 0.25s ease, transform 0.25s ease; }
+  .bpg__card:hover { box-shadow: 0 10px 30px rgba(0,0,0,0.08); transform: translateY(-3px); }
+  .bpg__img-wrap { aspect-ratio: 16 / 10; overflow: hidden; background: #f4f1ed; }
+  .bpg__img { width: 100%; height: 100%; object-fit: cover; display: block; transition: transform 0.4s ease; }
+  .bpg__card:hover .bpg__img { transform: scale(1.04); }
+  .bpg__img-placeholder { width: 100%; height: 100%; }
+  .bpg__body { padding: 1.5rem; display: flex; flex-direction: column; gap: 0.5rem; flex: 1; }
+  .bpg__date { font-size: 0.8rem; letter-spacing: 0.05em; text-transform: uppercase; margin: 0; }
+  .bpg__title { font-weight: 700; font-size: 1.15rem; line-height: 1.35; margin: 0; }
+  .bpg__excerpt { font-size: 0.9rem; line-height: 1.5; margin: 0; display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical; overflow: hidden; }
+  .bpg__readmore { font-weight: 600; font-size: 0.85rem; letter-spacing: 0.05em; text-transform: uppercase; margin-top: auto; padding-top: 0.5rem; display: inline-flex; align-items: center; gap: 0.4rem; transition: color 0.25s ease; }
+  .bpg__card:hover .bpg__readmore { color: var(--bpg-hover) !important; }
+  .bpg__arrow { transition: transform 0.25s ease; }
+  .bpg__card:hover .bpg__arrow { transform: translateX(4px); }
+  .bpg__view-all { text-align: center; margin-top: 2.5rem; }
+  .bpg__btn { display: inline-block; padding: 14px 36px; text-decoration: none; border-radius: 4px; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; font-size: 0.85rem; transition: background 0.25s ease; }
+  .bpg__btn:hover { background: var(--bpg-hover) !important; }
+  .bpg__empty { text-align: center; font-style: italic; padding: 2rem; }
+  @media (max-width: 990px) {
+    .bpg__grid { grid-template-columns: repeat(2, 1fr) !important; }
+  }
+  @media (max-width: 600px) {
+    .bpg__grid { grid-template-columns: 1fr !important; }
+  }
+{%- endstyle -%}
+
+{% schema %}
+{
+  "name": "Blog Posts Grid",
+  "settings": [
+    { "type": "header", "content": "Source" },
+    { "type": "blog", "id": "blog", "label": "Blog" },
+    { "type": "range", "id": "posts_to_show", "label": "Posts to show", "min": 2, "max": 12, "step": 1, "default": 3 },
+    { "type": "range", "id": "columns", "label": "Columns (desktop)", "min": 2, "max": 4, "step": 1, "default": 3 },
+
+    { "type": "header", "content": "Section header" },
+    { "type": "text", "id": "eyebrow", "label": "Eyebrow label", "default": "From the Blog" },
+    { "type": "text", "id": "heading", "label": "Section heading", "default": "Pharmacist Insights & Wellness Tips" },
+    { "type": "range", "id": "eyebrow_size", "label": "Eyebrow size (px)", "min": 10, "max": 18, "step": 1, "default": 12 },
+    { "type": "range", "id": "heading_size", "label": "Heading size (px)", "min": 20, "max": 42, "step": 2, "default": 30 },
+
+    { "type": "header", "content": "Card content" },
+    { "type": "checkbox", "id": "show_date", "label": "Show publish date", "default": true },
+    { "type": "checkbox", "id": "show_excerpt", "label": "Show excerpt", "default": true },
+    { "type": "text", "id": "readmore_label", "label": "\"Read more\" label", "default": "Read article" },
+
+    { "type": "header", "content": "View all" },
+    { "type": "checkbox", "id": "show_view_all", "label": "Show \"View all\" button", "default": true },
+    { "type": "text", "id": "view_all_label", "label": "Button label", "default": "View All Articles" },
+
+    { "type": "header", "content": "Spacing" },
+    { "type": "range", "id": "padding_top", "label": "Padding top (px)", "min": 0, "max": 120, "step": 4, "default": 48 },
+    { "type": "range", "id": "padding_bottom", "label": "Padding bottom (px)", "min": 0, "max": 120, "step": 4, "default": 48 },
+
+    { "type": "header", "content": "Colors" },
+    { "type": "color", "id": "bg_color", "label": "Section background", "default": "#ffffff" },
+    { "type": "color", "id": "card_bg", "label": "Card background", "default": "#ffffff" },
+    { "type": "color", "id": "heading_color", "label": "Heading color", "default": "#1a1a1a" },
+    { "type": "color", "id": "text_color", "label": "Card title color", "default": "#1a1a1a" },
+    { "type": "color", "id": "meta_color", "label": "Date / excerpt color", "default": "#555555" },
+    { "type": "color", "id": "accent_color", "label": "Accent (eyebrow, read-more)", "default": "#2e3192" },
+    { "type": "color", "id": "btn_bg", "label": "View all button background", "default": "#2e3192" },
+    { "type": "color", "id": "btn_text", "label": "View all button text", "default": "#ffffff" },
+    { "type": "color", "id": "hover_color", "label": "Hover color (read-more + button)", "default": "#38c6f4", "info": "Color the read-more link turns and the View All button fades to on hover" }
+  ],
+  "presets": [
+    { "name": "Blog Posts Grid" }
+  ]
+}
+{% endschema %}

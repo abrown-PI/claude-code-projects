@@ -1,0 +1,127 @@
+{%- assign coll = collections[section.settings.collection] -%}
+
+<section class="bspc">
+  <div class="bspc__inner">
+    <div class="bspc__text">
+      {%- if section.settings.heading != blank -%}
+        <h2 class="bspc__heading">{{ section.settings.heading }}</h2>
+      {%- endif -%}
+      {%- if section.settings.subheading != blank -%}
+        <p class="bspc__sub">{{ section.settings.subheading }}</p>
+      {%- endif -%}
+      {%- if section.settings.body != blank -%}
+        <div class="bspc__body">{{ section.settings.body }}</div>
+      {%- endif -%}
+      {%- if section.settings.button_label != blank -%}
+        <a href="{{ section.settings.button_link }}" class="bspc__btn">{{ section.settings.button_label }}</a>
+      {%- endif -%}
+    </div>
+
+    {%- if coll != blank and coll.products.size > 0 -%}
+      <div class="bspc__carousel" data-bspc data-autoplay="{{ section.settings.autoplay_ms }}">
+        <div class="bspc__track">
+          {%- for product in coll.products limit: 12 -%}
+            <a href="{{ product.url }}" class="bspc__card" data-bspc-card>
+              <div class="bspc__img-wrap">
+                {%- if product.featured_image -%}
+                  {{ product.featured_image | image_url: width: 600 | image_tag: loading: 'lazy', alt: product.title, class: 'bspc__img' }}
+                {%- endif -%}
+              </div>
+              <div class="bspc__info">
+                <div class="bspc__name">{{ product.title }}</div>
+                <div class="bspc__price">{{ product.price | money }}</div>
+              </div>
+            </a>
+          {%- endfor -%}
+        </div>
+        <button class="bspc__nav bspc__nav--prev" data-bspc-prev aria-label="Previous">&lsaquo;</button>
+        <button class="bspc__nav bspc__nav--next" data-bspc-next aria-label="Next">&rsaquo;</button>
+      </div>
+    {%- endif -%}
+  </div>
+</section>
+
+{%- style -%}
+  .bspc { padding-top: {{ section.settings.padding_top }}px; padding-bottom: {{ section.settings.padding_bottom }}px; padding-left: 2rem; padding-right: 2rem; background: {{ section.settings.bg_color }}; }
+  .bspc__inner { max-width: 1200px; margin: 0 auto; display: grid; grid-template-columns: 1fr 1fr; gap: 4rem; align-items: center; }
+  .bspc__text { max-width: 480px; }
+  .bspc__heading { font-size: 2.5rem; font-weight: 700; margin: 0 0 1rem; line-height: 1.2; color: {{ section.settings.heading_color }}; }
+  .bspc__sub { font-size: 1.1rem; color: {{ section.settings.heading_color }}; opacity: 0.7; margin: 0 0 1.5rem; font-style: italic; }
+  .bspc__body { font-size: 1rem; line-height: 1.6; margin: 0 0 2rem; color: {{ section.settings.body_color }}; }
+  .bspc__btn { display: inline-block; padding: 14px 32px; background: {{ section.settings.btn_bg }}; color: {{ section.settings.btn_text }} !important; --color-brand-navy: {{ section.settings.btn_text }}; text-decoration: none; border-radius: 6px; font-weight: 600; letter-spacing: 0.05em; text-transform: uppercase; }
+  .bspc__carousel { position: relative; height: 480px; overflow: hidden; }
+  .bspc__track { position: absolute; inset: 0; }
+  .bspc__card { position: absolute; top: 50%; left: 50%; width: 240px; height: 380px; margin-left: -120px; margin-top: -190px; background: #fff; border-radius: 16px; overflow: hidden; box-shadow: 0 12px 40px rgba(0,0,0,0.12); transition: all 0.6s cubic-bezier(.4,0,.2,1); text-decoration: none; color: inherit; opacity: 0; pointer-events: none; transform: translateX(0) scale(0.7); z-index: 1; }
+  .bspc__card[data-pos="center"] { transform: translateX(0) scale(1); opacity: 1; pointer-events: auto; z-index: 3; }
+  .bspc__card[data-pos="left"] { transform: translateX(-160px) scale(0.85); opacity: 0.6; z-index: 2; }
+  .bspc__card[data-pos="right"] { transform: translateX(160px) scale(0.85); opacity: 0.6; z-index: 2; }
+  .bspc__img-wrap { width: 100%; height: 280px; background: #f4f1ed; display: flex; align-items: center; justify-content: center; }
+  .bspc__img { max-width: 80%; max-height: 80%; object-fit: contain; }
+  .bspc__info { padding: 1rem; text-align: center; }
+  .bspc__name { font-weight: 600; margin-bottom: 0.25rem; font-size: 0.95rem; }
+  .bspc__price { color: #555; font-size: 0.9rem; }
+  .bspc__nav { position: absolute; top: 50%; transform: translateY(-50%); background: rgba(255,255,255,0.95); border: 1px solid rgba(0,0,0,0.08); width: 40px; height: 40px; border-radius: 50%; cursor: pointer; font-size: 1.5rem; line-height: 1; z-index: 4; }
+  .bspc__nav--prev { left: 0; }
+  .bspc__nav--next { right: 0; }
+  @media (max-width: 749px) {
+    .bspc__inner { grid-template-columns: 1fr; gap: 2rem; }
+    .bspc__heading { font-size: 1.75rem; }
+    .bspc__carousel { height: 440px; }
+  }
+{%- endstyle -%}
+
+<script>
+(() => {
+  document.querySelectorAll('[data-bspc]').forEach(carousel => {
+    const cards = carousel.querySelectorAll('[data-bspc-card]');
+    if (!cards.length) return;
+    let current = 0;
+    const total = cards.length;
+    const autoplay = parseInt(carousel.dataset.autoplay, 10);
+    let timer = null;
+    const update = () => {
+      cards.forEach((card, i) => {
+        card.removeAttribute('data-pos');
+        if (i === current) card.setAttribute('data-pos', 'center');
+        else if (i === (current - 1 + total) % total) card.setAttribute('data-pos', 'left');
+        else if (i === (current + 1) % total) card.setAttribute('data-pos', 'right');
+      });
+    };
+    const start = () => { if (autoplay > 0) timer = setInterval(() => { current = (current + 1) % total; update(); }, autoplay); };
+    const restart = () => { if (timer) clearInterval(timer); start(); };
+    update();
+    start();
+    carousel.querySelector('[data-bspc-prev]')?.addEventListener('click', e => { e.preventDefault(); current = (current - 1 + total) % total; update(); restart(); });
+    carousel.querySelector('[data-bspc-next]')?.addEventListener('click', e => { e.preventDefault(); current = (current + 1) % total; update(); restart(); });
+  });
+})();
+</script>
+
+{% schema %}
+{
+  "name": "Brand Story Carousel",
+  "settings": [
+    { "type": "header", "content": "Text content (left side)" },
+    { "type": "text", "id": "heading", "label": "Heading", "default": "Meet Nutritional Innovations" },
+    { "type": "text", "id": "subheading", "label": "Subheading", "default": "Pharmacist-curated supplements, made simple." },
+    { "type": "richtext", "id": "body", "label": "Body text", "default": "<p>Nutritional Innovations is our in-house line of pharmacist-formulated supplements, designed to take the guesswork out of daily wellness.</p>" },
+    { "type": "text", "id": "button_label", "label": "Button label", "default": "Shop Nutritional Innovations" },
+    { "type": "url", "id": "button_link", "label": "Button link" },
+    { "type": "header", "content": "Product carousel (right side)" },
+    { "type": "collection", "id": "collection", "label": "Collection to loop" },
+    { "type": "range", "id": "autoplay_ms", "label": "Auto-rotate (ms)", "min": 0, "max": 8000, "step": 500, "default": 3500, "info": "0 = no auto-rotation" },
+    { "type": "header", "content": "Spacing" },
+    { "type": "range", "id": "padding_top", "label": "Padding top (px)", "min": 0, "max": 120, "step": 4, "default": 32 },
+    { "type": "range", "id": "padding_bottom", "label": "Padding bottom (px)", "min": 0, "max": 120, "step": 4, "default": 32 },
+    { "type": "header", "content": "Colors" },
+    { "type": "color", "id": "bg_color", "label": "Section background", "default": "#f9f7f4" },
+    { "type": "color", "id": "heading_color", "label": "Heading color", "default": "#1a1a1a" },
+    { "type": "color", "id": "body_color", "label": "Body text color", "default": "#3a3a3a" },
+    { "type": "color", "id": "btn_bg", "label": "Button background", "default": "#2e3192" },
+    { "type": "color", "id": "btn_text", "label": "Button text", "default": "#ffffff" }
+  ],
+  "presets": [
+    { "name": "Brand Story Carousel" }
+  ]
+}
+{% endschema %}

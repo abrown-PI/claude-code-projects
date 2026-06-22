@@ -132,7 +132,6 @@ button.shopify-payment-button__button--unbranded {
 /* ============================================
    COLLECTION CARD - Image as background w/ overlay
    ============================================ */
-
 .collection-card-wrapper .card {
   position: relative;
   aspect-ratio: 4 / 3;
@@ -167,7 +166,6 @@ button.shopify-payment-button__button--unbranded {
   opacity: 1 !important;
 }
 
-/* Dark gradient overlay for readability */
 .collection-card-wrapper .card.card--media::after {
   content: '';
   position: absolute;
@@ -177,7 +175,6 @@ button.shopify-payment-button__button--unbranded {
   pointer-events: none;
 }
 
-/* Text overlay on top of image — TARGETS THE OUTSIDE card__content */
 .collection-card-wrapper .card.card--media > .card__content,
 .collection-card-wrapper.card-wrapper .card.card--media > .card__content {
   position: absolute !important;
@@ -199,7 +196,6 @@ button.shopify-payment-button__button--unbranded {
   padding: 0 !important;
 }
 
-/* Force description visible on image cards — overrides Dawn's display:none */
 .collection-card-wrapper .card.card--standard.card--media > .card__content .card__caption,
 .collection-card-wrapper .card.card--media > .card__content .card__caption {
   display: block !important;
@@ -210,12 +206,6 @@ button.shopify-payment-button__button--unbranded {
 .collection-card-wrapper .card.card--media .card__heading a,
 .collection-card-wrapper .card.card--media .card__caption {
   color: #ffffff !important;
-}
-
-/* Hide the inside-card__inner duplicate content for image cards (Dawn already hides it
-   but ensures no duplicate text behind the overlay) */
-.collection-card-wrapper .card.card--media .card__inner .card__content {
-  display: none !important;
 }
 
 .collection-card-wrapper .card.card--media .card__heading {
@@ -235,7 +225,6 @@ button.shopify-payment-button__button--unbranded {
   text-shadow: 0 1px 2px rgba(0, 0, 0, 0.35);
 }
 
-/* Subtle zoom on hover */
 .collection-card-wrapper .card.card--media .card__media img {
   transition: transform 0.4s ease;
 }
@@ -244,7 +233,10 @@ button.shopify-payment-button__button--unbranded {
   transform: scale(1.05);
 }
 
-/* Fallback for collections with NO featured image */
+.collection-card-wrapper .card.card--media .card__inner .card__content {
+  display: none !important;
+}
+
 .collection-card-wrapper .card.card--text {
   background-color: #e8eaed;
   display: flex;

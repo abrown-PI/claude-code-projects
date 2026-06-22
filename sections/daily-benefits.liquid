@@ -1,0 +1,382 @@
+{%- style -%}
+  .daily-benefits {
+    text-align: center;
+    padding: 5rem 2rem;
+    background-color: {{ section.settings.bg_color }};
+  }
+  .daily-benefits__caption {
+    font-size: {{ section.settings.caption_size }}px;
+    font-weight: 600;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: {{ section.settings.caption_color }};
+    margin-bottom: 1rem;
+  }
+  .daily-benefits__heading {
+    font-size: {{ section.settings.heading_size }}px;
+    font-weight: 800;
+    line-height: 1.1;
+    text-transform: uppercase;
+    letter-spacing: -0.02em;
+    color: {{ section.settings.heading_color }};
+    margin: 0 auto 1.5rem;
+    max-width: 900px;
+  }
+  .daily-benefits__text {
+    font-size: {{ section.settings.body_size }}px;
+    line-height: 1.4;
+    color: {{ section.settings.text_color }};
+    max-width: 1200px;
+    margin: 0 auto {{ section.settings.text_to_grid_gap }}px;
+  }
+  .daily-benefits__text p {
+    margin: 0;
+  }
+  .daily-benefits__grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 2rem;
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 1rem;
+  }
+  .daily-benefits__product {
+    text-align: center;
+    position: relative;
+  }
+  .daily-benefits__product-media {
+    position: relative;
+    overflow: hidden;
+    aspect-ratio: 1/1;
+    background-color: #f5f5f5;
+    border-radius: 4px;
+    margin-bottom: 1rem;
+  }
+  .daily-benefits__product-img {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    display: block;
+    padding: 1rem;
+    transition: opacity 0.4s ease;
+  }
+  .daily-benefits__product-img--hover {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    padding: 1rem;
+    opacity: 0;
+    transition: opacity 0.4s ease;
+  }
+  .daily-benefits__product-media:hover .daily-benefits__product-img {
+    opacity: 0;
+  }
+  .daily-benefits__product-media:hover .daily-benefits__product-img--hover {
+    opacity: 1;
+  }
+  .daily-benefits__product-atc {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background-color: {{ section.settings.atc_bg }};
+    color: {{ section.settings.atc_text }} !important;
+    --color-brand-navy: {{ section.settings.atc_text }};
+    padding: 12px;
+    font-size: 0.75rem;
+    font-weight: 700;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    text-decoration: none;
+    text-align: center;
+    display: block;
+    opacity: 0;
+    transform: translateY(100%);
+    transition: opacity 0.3s ease, transform 0.3s ease, background-color 0.25s ease;
+    border: none;
+    cursor: pointer;
+    width: 100%;
+  }
+  .daily-benefits__product-media:hover .daily-benefits__product-atc {
+    opacity: 1;
+    transform: translateY(0);
+  }
+  .daily-benefits__product-atc:hover {
+    background-color: {{ section.settings.atc_hover_bg }};
+  }
+  .daily-benefits__product-title {
+    font-size: 0.95rem;
+    font-weight: 600;
+    color: {{ section.settings.heading_color }};
+    margin-bottom: 0.25rem;
+  }
+  .daily-benefits__product-title a {
+    text-decoration: none;
+    color: inherit;
+  }
+  .daily-benefits__product-title a:hover {
+    color: {{ section.settings.caption_color }};
+  }
+  .daily-benefits__product-price {
+    font-size: 0.9rem;
+    font-weight: 700;
+    color: {{ section.settings.heading_color }};
+  }
+  .daily-benefits__view-all {
+    display: inline-block;
+    margin-top: 3rem;
+    font-size: 0.8rem;
+    font-weight: 700;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: {{ section.settings.heading_color }};
+    text-decoration: none;
+    border-bottom: 2px solid {{ section.settings.heading_color }};
+    padding-bottom: 4px;
+    transition: all 0.3s ease;
+  }
+  .daily-benefits__view-all:hover {
+    color: {{ section.settings.caption_color }};
+    border-color: {{ section.settings.caption_color }};
+  }
+  .daily-benefits__divider {
+    width: 100%;
+    max-width: 800px;
+    height: 2px;
+    background: linear-gradient(to right, transparent, {{ section.settings.heading_color }}, transparent);
+    margin: 2.5rem auto 0;
+    opacity: 0.15;
+  }
+  @media (max-width: 989px) {
+    .daily-benefits__grid {
+      grid-template-columns: repeat(3, 1fr);
+    }
+  }
+  @media (max-width: 749px) {
+    .daily-benefits {
+      padding: 3rem 1.5rem;
+    }
+    .daily-benefits__grid {
+      grid-template-columns: repeat(2, 1fr);
+      gap: 1rem;
+    }
+    .daily-benefits__heading {
+      font-size: 1.8rem;
+    }
+    .daily-benefits__product-atc {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+{%- endstyle -%}
+
+<section class="daily-benefits">
+  {%- if section.settings.caption != blank -%}
+    <p class="daily-benefits__caption">{{ section.settings.caption }}</p>
+  {%- endif -%}
+
+  <h2 class="daily-benefits__heading">{{ section.settings.heading }}</h2>
+
+  {%- if section.settings.description != blank -%}
+    <div class="daily-benefits__text">{{ section.settings.description }}</div>
+  {%- endif -%}
+
+  {%- if section.settings.collection != blank -%}
+    <div class="daily-benefits__grid">
+      {%- for product in section.settings.collection.products limit: section.settings.products_to_show -%}
+        <div class="daily-benefits__product">
+          <div class="daily-benefits__product-media">
+            {%- if product.featured_image != blank -%}
+              <img
+                class="daily-benefits__product-img"
+                src="{{ product.featured_image | image_url: width: 600 }}"
+                alt="{{ product.featured_image.alt | escape }}"
+                loading="lazy"
+                width="600"
+                height="600"
+              >
+            {%- endif -%}
+
+            {%- if product.images[1] != blank -%}
+              <img
+                class="daily-benefits__product-img--hover"
+                src="{{ product.images[1] | image_url: width: 600 }}"
+                alt="{{ product.images[1].alt | escape }}"
+                loading="lazy"
+                width="600"
+                height="600"
+              >
+            {%- endif -%}
+
+            <a href="{{ product.url }}" class="daily-benefits__product-atc">
+              View Product
+            </a>
+          </div>
+          <p class="daily-benefits__product-title">
+            <a href="{{ product.url }}">{{ product.title }}</a>
+          </p>
+          <p class="daily-benefits__product-price">{{ product.price | money }}</p>
+        </div>
+      {%- endfor -%}
+    </div>
+
+    <div class="daily-benefits__divider"></div>
+
+    {%- if section.settings.show_view_all -%}
+      <a href="{{ section.settings.collection.url }}" class="daily-benefits__view-all">
+        View All
+      </a>
+    {%- endif -%}
+  {%- else -%}
+    <p style="color: #999; font-style: italic;">Select a collection in the section settings to display products.</p>
+  {%- endif -%}
+</section>
+
+{% schema %}
+{
+  "name": "Daily Benefits",
+  "settings": [
+    {
+      "type": "text",
+      "id": "caption",
+      "label": "Caption",
+      "default": "Plant Powered"
+    },
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "Heading",
+      "default": "DAILY SUPPLEMENTS WITH BENEFITS FOR YOU TO FEEL GOOD"
+    },
+    {
+      "type": "richtext",
+      "id": "description",
+      "label": "Description",
+      "default": "<p>Premium supplements crafted to support your wellness journey, from immunity to energy and beyond.</p>"
+    },
+    {
+      "type": "header",
+      "content": "Text Sizes"
+    },
+    {
+      "type": "range",
+      "id": "caption_size",
+      "label": "Caption text size (px)",
+      "min": 10,
+      "max": 24,
+      "step": 1,
+      "default": 12
+    },
+    {
+      "type": "range",
+      "id": "heading_size",
+      "label": "Heading text size (px)",
+      "min": 20,
+      "max": 72,
+      "step": 2,
+      "default": 36
+    },
+    {
+      "type": "range",
+      "id": "body_size",
+      "label": "Description text size (px)",
+      "min": 12,
+      "max": 24,
+      "step": 1,
+      "default": 16
+    },
+    {
+      "type": "range",
+      "id": "text_to_grid_gap",
+      "label": "Space between description and products (px)",
+      "min": 0,
+      "max": 64,
+      "step": 4,
+      "default": 24
+    },
+    {
+      "type": "header",
+      "content": "Products"
+    },
+    {
+      "type": "collection",
+      "id": "collection",
+      "label": "Collection"
+    },
+    {
+      "type": "range",
+      "id": "products_to_show",
+      "label": "Products to show",
+      "min": 2,
+      "max": 8,
+      "step": 1,
+      "default": 4
+    },
+    {
+      "type": "checkbox",
+      "id": "show_view_all",
+      "label": "Show View All link",
+      "default": true
+    },
+    {
+      "type": "header",
+      "content": "Hover Button"
+    },
+    {
+      "type": "color",
+      "id": "atc_bg",
+      "label": "Hover button background",
+      "default": "#2e3192"
+    },
+    {
+      "type": "color",
+      "id": "atc_text",
+      "label": "Hover button text",
+      "default": "#ffffff"
+    },
+    {
+      "type": "color",
+      "id": "atc_hover_bg",
+      "label": "Hover button hover color",
+      "default": "#38c6f4",
+      "info": "Lighter blue the bar fades to when the cursor is on it"
+    },
+    {
+      "type": "header",
+      "content": "Colors"
+    },
+    {
+      "type": "color",
+      "id": "bg_color",
+      "label": "Background color",
+      "default": "#f9f7f4"
+    },
+    {
+      "type": "color",
+      "id": "caption_color",
+      "label": "Caption color",
+      "default": "#38c6f4"
+    },
+    {
+      "type": "color",
+      "id": "heading_color",
+      "label": "Heading color",
+      "default": "#1a1a1a"
+    },
+    {
+      "type": "color",
+      "id": "text_color",
+      "label": "Text color",
+      "default": "#555555"
+    }
+  ],
+  "presets": [
+    {
+      "name": "Daily Benefits"
+    }
+  ]
+}
+{% endschema %}

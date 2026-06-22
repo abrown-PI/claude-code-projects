@@ -1,0 +1,262 @@
+{%- assign coll = collections[section.settings.collection] -%}
+
+<section class="nil">
+
+  <!-- HERO BANNER -->
+  <div class="nil-hero" style="height:{{ section.settings.banner_height }}vh;">
+    {%- if section.settings.banner_image != blank -%}
+      <img class="nil-hero__bg"
+           src="{{ section.settings.banner_image | image_url: width: 2400 }}"
+           alt="{{ section.settings.banner_title | strip_html }}"
+           style="object-position: center {{ section.settings.image_focus }};" />
+    {%- endif -%}
+    <div class="nil-hero__overlay" style="background: rgba(0,0,0,{{ section.settings.banner_overlay | divided_by: 100.0 }});"></div>
+    <div class="nil-hero__content">
+      {%- if section.settings.banner_label != blank -%}
+        <p class="nil-hero__label" style="color:{{ section.settings.label_color }};font-size:{{ section.settings.label_size }}px;">{{ section.settings.banner_label }}</p>
+      {%- endif -%}
+      {%- if section.settings.banner_title != blank -%}
+        <h1 class="nil-hero__title" style="color:{{ section.settings.title_color }};font-size:{{ section.settings.title_size }}px;">{{ section.settings.banner_title }}</h1>
+      {%- endif -%}
+      {%- if section.settings.banner_subtitle != blank -%}
+        <p class="nil-hero__subtitle" style="color:{{ section.settings.subtitle_color }};font-size:{{ section.settings.subtitle_size }}px;">{{ section.settings.banner_subtitle }}</p>
+      {%- endif -%}
+      {%- if section.settings.banner_btn != blank -%}
+        <a href="{{ section.settings.banner_btn_link }}"
+           class="nil-hero__btn"
+           style="font-size:{{ section.settings.btn_size }}px;padding:{{ section.settings.btn_padding }}px {{ section.settings.btn_padding | times: 2.5 }}px;background:{{ section.settings.btn_bg }};color:{{ section.settings.btn_text_color }} !important;--color-brand-navy:{{ section.settings.btn_text_color }};border-color:{{ section.settings.btn_border }};">{{ section.settings.banner_btn }}</a>
+      {%- endif -%}
+    </div>
+  </div>
+
+  <!-- INTRO + PILLARS -->
+  <div class="nil-intro">
+    <div class="nil-intro__inner">
+      {%- if section.settings.intro_tagline != blank -%}
+        <p class="nil-intro__tagline" style="font-size:{{ section.settings.intro_tagline_size }}px;">{{ section.settings.intro_tagline }}</p>
+      {%- endif -%}
+      {%- if section.settings.intro_heading != blank -%}
+        <h2 class="nil-intro__heading" style="font-size:{{ section.settings.intro_heading_size }}px;">{{ section.settings.intro_heading }}</h2>
+      {%- endif -%}
+
+      {%- if section.blocks.size > 0 -%}
+        <div class="nil-pillars">
+          {%- for block in section.blocks -%}
+            {%- if block.type == 'pillar' -%}
+              <div class="nil-pillar" {{ block.shopify_attributes }}>
+                <div class="nil-pillar__number" style="font-size:{{ section.settings.pillar_number_size }}px;">{{ block.settings.number }}</div>
+                <div class="nil-pillar__title" style="font-size:{{ section.settings.pillar_title_size }}px;">{{ block.settings.title }}</div>
+                <div class="nil-pillar__text" style="font-size:{{ section.settings.pillar_text_size }}px;">{{ block.settings.text }}</div>
+              </div>
+            {%- endif -%}
+          {%- endfor -%}
+        </div>
+      {%- endif -%}
+    </div>
+  </div>
+
+  <!-- ORIGIN STORY (compounding heritage) -->
+  {%- if section.settings.origin_image != blank or section.settings.origin_heading != blank -%}
+    <div class="nil-origin">
+      <div class="nil-origin__inner">
+        {%- if section.settings.origin_image != blank -%}
+          <div class="nil-origin__image">
+            <img src="{{ section.settings.origin_image | image_url: width: 1200 }}" alt="{{ section.settings.origin_heading | strip_html }}" />
+          </div>
+        {%- endif -%}
+        <div class="nil-origin__text">
+          {%- if section.settings.origin_eyebrow != blank -%}
+            <p class="nil-origin__eyebrow" style="font-size:{{ section.settings.origin_eyebrow_size }}px;">{{ section.settings.origin_eyebrow }}</p>
+          {%- endif -%}
+          {%- if section.settings.origin_heading != blank -%}
+            <h2 class="nil-origin__heading" style="font-size:{{ section.settings.origin_heading_size }}px;">{{ section.settings.origin_heading }}</h2>
+          {%- endif -%}
+          {%- if section.settings.origin_text != blank -%}
+            <div class="nil-origin__body" style="font-size:{{ section.settings.origin_text_size }}px;">{{ section.settings.origin_text }}</div>
+          {%- endif -%}
+        </div>
+      </div>
+    </div>
+  {%- endif -%}
+
+  <!-- FEATURED PRODUCTS -->
+  {%- if coll != blank and coll.products.size > 0 -%}
+    <div class="nil-products">
+      <div class="nil-products__inner">
+        {%- if section.settings.products_label != blank -%}
+          <p class="nil-products__label" style="font-size:{{ section.settings.products_label_size }}px;">{{ section.settings.products_label }}</p>
+        {%- endif -%}
+        {%- if section.settings.products_heading != blank -%}
+          <h2 class="nil-products__heading" style="font-size:{{ section.settings.products_heading_size }}px;">{{ section.settings.products_heading }}</h2>
+        {%- endif -%}
+        <div class="nil-products__grid">
+          {%- for product in coll.products limit: section.settings.products_to_show -%}
+            <a href="{{ product.url }}" class="nil-product">
+              <div class="nil-product__img">
+                {%- if product.featured_image -%}
+                  {{ product.featured_image | image_url: width: 500 | image_tag: loading: 'lazy', alt: product.title }}
+                {%- endif -%}
+              </div>
+              <div class="nil-product__info">
+                <div class="nil-product__name">{{ product.title }}</div>
+                <div class="nil-product__price">{{ product.price | money }}</div>
+              </div>
+            </a>
+          {%- endfor -%}
+        </div>
+      </div>
+    </div>
+  {%- endif -%}
+
+  <!-- BOTTOM CTA -->
+  {%- if section.settings.cta_heading != blank or section.settings.cta_label != blank -%}
+    <div class="nil-cta">
+      <div class="nil-cta__inner">
+        {%- if section.settings.cta_heading != blank -%}
+          <h2 class="nil-cta__heading">{{ section.settings.cta_heading }}</h2>
+        {%- endif -%}
+        {%- if section.settings.cta_label != blank -%}
+          <a href="{{ section.settings.cta_link }}" class="nil-cta__btn">{{ section.settings.cta_label }}</a>
+        {%- endif -%}
+      </div>
+    </div>
+  {%- endif -%}
+
+</section>
+
+{%- style -%}
+  .nil { display: block; }
+  .nil-hero { position: relative; overflow: hidden; display: flex; align-items: center; justify-content: center; }
+  .nil-hero__bg { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; z-index: 0; }
+  .nil-hero__overlay { position: absolute; inset: 0; z-index: 1; }
+  .nil-hero__content { position: relative; z-index: 2; max-width: 900px; padding: 0 2rem; text-align: center; }
+  .nil-hero__label { letter-spacing: 0.2em; text-transform: uppercase; font-weight: 600; margin: 0 0 1rem; }
+  .nil-hero__title { font-weight: 700; line-height: 1.1; margin: 0 0 1.25rem; }
+  .nil-hero__subtitle { line-height: 1.5; margin: 0 0 2rem; }
+  .nil-hero__btn { display: inline-block; text-decoration: none; letter-spacing: 0.15em; text-transform: uppercase; font-weight: 600; border: 2px solid; border-radius: 2px; transition: all 0.25s ease; }
+  .nil-hero__btn:hover { background: rgba(255,255,255,0.15) !important; }
+
+  .nil-intro { background: #ffffff; padding: 4rem 2rem; }
+  .nil-intro__inner { max-width: 1100px; margin: 0 auto; text-align: center; }
+  .nil-intro__tagline { letter-spacing: 0.2em; text-transform: uppercase; color: #2e3192; font-weight: 600; margin: 0 0 1rem; }
+  .nil-intro__heading { font-weight: 700; line-height: 1.25; color: #1a1a1a; max-width: 800px; margin: 0 auto 3rem; }
+  .nil-pillars { display: grid; grid-template-columns: repeat(3, 1fr); gap: 2.5rem; margin-top: 2rem; }
+  .nil-pillar { text-align: left; padding: 0 0.5rem; }
+  .nil-pillar__number { font-weight: 700; color: #2e3192; line-height: 1; margin-bottom: 0.5rem; opacity: 0.5; }
+  .nil-pillar__title { font-weight: 700; color: #1a1a1a; margin-bottom: 0.5rem; line-height: 1.3; }
+  .nil-pillar__text { color: #555; line-height: 1.5; }
+
+  .nil-origin { background: #f9f7f4; padding: 4rem 2rem; }
+  .nil-origin__inner { max-width: 1100px; margin: 0 auto; display: grid; grid-template-columns: 1fr 1fr; gap: 4rem; align-items: center; }
+  .nil-origin__image img { width: 100%; height: auto; border-radius: 4px; }
+  .nil-origin__eyebrow { letter-spacing: 0.2em; text-transform: uppercase; color: #2e3192; font-weight: 600; margin: 0 0 1rem; }
+  .nil-origin__heading { font-weight: 700; line-height: 1.25; color: #1a1a1a; margin: 0 0 1.5rem; }
+  .nil-origin__body { line-height: 1.6; color: #3a3a3a; }
+  .nil-origin__body p { margin: 0 0 1rem; }
+
+  .nil-products { background: #ffffff; padding: 4rem 2rem; }
+  .nil-products__inner { max-width: 1200px; margin: 0 auto; text-align: center; }
+  .nil-products__label { letter-spacing: 0.2em; text-transform: uppercase; color: #2e3192; font-weight: 600; margin: 0 0 1rem; }
+  .nil-products__heading { font-weight: 700; color: #1a1a1a; margin: 0 0 2.5rem; }
+  .nil-products__grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 1.5rem; }
+  .nil-product { text-decoration: none; color: inherit; border: 1px solid #eee; border-radius: 6px; overflow: hidden; transition: box-shadow 0.2s, transform 0.2s; display: block; }
+  .nil-product:hover { box-shadow: 0 8px 24px rgba(0,0,0,0.1); transform: translateY(-2px); }
+  .nil-product__img { aspect-ratio: 1 / 1; background: #f4f1ed; display: flex; align-items: center; justify-content: center; padding: 1rem; }
+  .nil-product__img img { max-width: 100%; max-height: 100%; object-fit: contain; }
+  .nil-product__info { padding: 1rem; text-align: left; }
+  .nil-product__name { font-weight: 600; font-size: 0.95rem; margin-bottom: 0.25rem; line-height: 1.3; }
+  .nil-product__price { color: #555; font-size: 0.9rem; }
+
+  .nil-cta { background: #2e3192; padding: 3.5rem 2rem; text-align: center; }
+  .nil-cta__heading { color: #fff; font-weight: 700; margin: 0 0 1.5rem; font-size: 1.5rem; }
+  .nil-cta__btn { display: inline-block; padding: 14px 36px; background: #ffffff; color: #2e3192 !important; --color-brand-navy: #2e3192; text-decoration: none; border-radius: 4px; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; }
+
+  @media (max-width: 749px) {
+    .nil-hero__content { padding: 0 1.5rem; }
+    .nil-pillars { grid-template-columns: 1fr; gap: 2rem; }
+    .nil-origin__inner { grid-template-columns: 1fr; gap: 2rem; }
+    .nil-products__grid { grid-template-columns: repeat(2, 1fr); }
+  }
+{%- endstyle -%}
+
+{% schema %}
+{
+  "name": "NI Landing Page",
+  "settings": [
+    { "type": "header", "content": "Hero Banner" },
+    { "type": "image_picker", "id": "banner_image", "label": "Banner image" },
+    { "type": "text", "id": "image_focus", "label": "Image focus (top/center/bottom or %)", "default": "center" },
+    { "type": "range", "id": "banner_height", "label": "Banner height (vh)", "min": 30, "max": 90, "step": 5, "default": 55 },
+    { "type": "range", "id": "banner_overlay", "label": "Banner overlay darkness (%)", "min": 0, "max": 80, "step": 5, "default": 40 },
+    { "type": "text", "id": "banner_label", "label": "Eyebrow label", "default": "Nutritional Innovations" },
+    { "type": "richtext", "id": "banner_title", "label": "Banner title", "default": "<p>Pharmacist-curated<br>supplements,<br>made simple.</p>" },
+    { "type": "richtext", "id": "banner_subtitle", "label": "Banner subtitle", "default": "<p>Our in-house line of pharmacist-formulated supplements,<br>designed to take the guesswork out of daily wellness.</p>" },
+    { "type": "text", "id": "banner_btn", "label": "Button label", "default": "Shop the Collection" },
+    { "type": "url", "id": "banner_btn_link", "label": "Button link" },
+    { "type": "range", "id": "label_size", "label": "Eyebrow size (px)", "min": 8, "max": 24, "step": 1, "default": 12 },
+    { "type": "range", "id": "title_size", "label": "Title size (px)", "min": 24, "max": 72, "step": 2, "default": 48 },
+    { "type": "range", "id": "subtitle_size", "label": "Subtitle size (px)", "min": 12, "max": 24, "step": 1, "default": 16 },
+    { "type": "color", "id": "label_color", "label": "Eyebrow color", "default": "#38c6f4" },
+    { "type": "color", "id": "title_color", "label": "Title color", "default": "#ffffff" },
+    { "type": "color", "id": "subtitle_color", "label": "Subtitle color", "default": "#ffffffd9" },
+    { "type": "range", "id": "btn_size", "label": "Button text size (px)", "min": 10, "max": 18, "step": 1, "default": 12 },
+    { "type": "range", "id": "btn_padding", "label": "Button padding (px)", "min": 8, "max": 24, "step": 1, "default": 14 },
+    { "type": "color", "id": "btn_bg", "label": "Button background", "default": "rgba(0,0,0,0)" },
+    { "type": "color", "id": "btn_text_color", "label": "Button text", "default": "#ffffff" },
+    { "type": "color", "id": "btn_border", "label": "Button border", "default": "#2e3192" },
+
+    { "type": "header", "content": "Intro + Pillars" },
+    { "type": "text", "id": "intro_tagline", "label": "Intro tagline", "default": "Quality you trust. Supplements that fit your life." },
+    { "type": "richtext", "id": "intro_heading", "label": "Intro heading", "default": "<p>Because wellness should be simple, trusted, and made for you.</p>" },
+    { "type": "range", "id": "intro_tagline_size", "label": "Tagline size (px)", "min": 10, "max": 18, "step": 1, "default": 12 },
+    { "type": "range", "id": "intro_heading_size", "label": "Heading size (px)", "min": 18, "max": 42, "step": 2, "default": 28 },
+    { "type": "range", "id": "pillar_number_size", "label": "Pillar number size (px)", "min": 24, "max": 60, "step": 2, "default": 40 },
+    { "type": "range", "id": "pillar_title_size", "label": "Pillar title size (px)", "min": 12, "max": 24, "step": 1, "default": 16 },
+    { "type": "range", "id": "pillar_text_size", "label": "Pillar text size (px)", "min": 12, "max": 18, "step": 1, "default": 14 },
+
+    { "type": "header", "content": "Origin Story" },
+    { "type": "image_picker", "id": "origin_image", "label": "Story image" },
+    { "type": "text", "id": "origin_eyebrow", "label": "Eyebrow", "default": "Born from our roots" },
+    { "type": "richtext", "id": "origin_heading", "label": "Story heading", "default": "<p>Built from a compounding pharmacy's expertise.</p>" },
+    { "type": "richtext", "id": "origin_text", "label": "Story body", "default": "<p>Nutritional Innovations grew out of decades of compounding pharmacy work at Pharmacy Innovations. Every formula reflects the same precision, sourcing standards, and pharmacist oversight we bring to every prescription we prepare. When you choose NI, you're choosing the same care that has served our community for generations.</p>" },
+    { "type": "range", "id": "origin_eyebrow_size", "label": "Eyebrow size (px)", "min": 10, "max": 20, "step": 1, "default": 13 },
+    { "type": "range", "id": "origin_heading_size", "label": "Heading size (px)", "min": 18, "max": 36, "step": 2, "default": 26 },
+    { "type": "range", "id": "origin_text_size", "label": "Body size (px)", "min": 12, "max": 20, "step": 1, "default": 16 },
+
+    { "type": "header", "content": "Featured Products" },
+    { "type": "collection", "id": "collection", "label": "Collection" },
+    { "type": "range", "id": "products_to_show", "label": "Products to show", "min": 2, "max": 12, "step": 1, "default": 4 },
+    { "type": "text", "id": "products_label", "label": "Eyebrow label", "default": "Shop the Line" },
+    { "type": "text", "id": "products_heading", "label": "Section heading", "default": "Nutritional Innovations Products" },
+    { "type": "range", "id": "products_label_size", "label": "Eyebrow size (px)", "min": 10, "max": 18, "step": 1, "default": 12 },
+    { "type": "range", "id": "products_heading_size", "label": "Heading size (px)", "min": 18, "max": 42, "step": 2, "default": 30 },
+
+    { "type": "header", "content": "Bottom CTA" },
+    { "type": "text", "id": "cta_heading", "label": "CTA heading", "default": "Questions? Talk to a Pharmacist." },
+    { "type": "text", "id": "cta_label", "label": "Button label", "default": "Contact Us" },
+    { "type": "url", "id": "cta_link", "label": "Button link" }
+  ],
+  "blocks": [
+    {
+      "type": "pillar",
+      "name": "Pillar",
+      "settings": [
+        { "type": "text", "id": "number", "label": "Number", "default": "01" },
+        { "type": "text", "id": "title", "label": "Title", "default": "Pillar title" },
+        { "type": "textarea", "id": "text", "label": "Text", "default": "Pillar description goes here." }
+      ]
+    }
+  ],
+  "max_blocks": 4,
+  "presets": [
+    {
+      "name": "NI Landing Page",
+      "blocks": [
+        { "type": "pillar", "settings": { "number": "01", "title": "Pharmacist-Formulated", "text": "Every product is designed by our pharmacists, held to the same standards as the prescriptions we prepare daily." } },
+        { "type": "pillar", "settings": { "number": "02", "title": "Targeted Health Goals", "text": "From immunity to recovery to women's health, our formulas are built around real, specific needs." } },
+        { "type": "pillar", "settings": { "number": "03", "title": "Quality You Can Count On", "text": "Carefully sourced ingredients, transparent labeling, and the credibility of 11 PI pharmacies behind every bottle." } }
+      ]
+    }
+  ]
+}
+{% endschema %}

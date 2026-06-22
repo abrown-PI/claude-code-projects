@@ -1,0 +1,102 @@
+{%- style -%}
+  .scrolling-announcement {
+    background-color: {{ section.settings.bg_color }};
+    overflow: hidden;
+    white-space: nowrap;
+    padding: 8px 0;
+    position: relative;
+  }
+  .scrolling-announcement__track {
+    display: inline-flex;
+    animation: scroll-left {{ section.settings.speed }}s linear infinite;
+  }
+  .scrolling-announcement__item {
+    display: inline-flex;
+    align-items: center;
+    padding: 0 3rem;
+    color: {{ section.settings.text_color }};
+    font-size: 0.75rem;
+    font-weight: 600;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    text-decoration: none;
+  }
+  .scrolling-announcement__item::after {
+    content: '·';
+    margin-left: 3rem;
+    opacity: 0.5;
+  }
+  @keyframes scroll-left {
+    0% { transform: translateX(0); }
+    100% { transform: translateX(-50%); }
+  }
+  .scrolling-announcement:hover .scrolling-announcement__track {
+    animation-play-state: paused;
+  }
+{%- endstyle -%}
+
+<div class="scrolling-announcement">
+  <div class="scrolling-announcement__track">
+    {%- for i in (1..20) -%}
+      <span class="scrolling-announcement__item">{{ section.settings.text_1 }}</span>
+      {%- if section.settings.text_2 != blank -%}
+        <span class="scrolling-announcement__item">{{ section.settings.text_2 }}</span>
+      {%- endif -%}
+      {%- if section.settings.text_3 != blank -%}
+        <span class="scrolling-announcement__item">{{ section.settings.text_3 }}</span>
+      {%- endif -%}
+    {%- endfor -%}
+  </div>
+</div>
+
+{% schema %}
+{
+  "name": "Scrolling Announcement",
+  "settings": [
+    {
+      "type": "text",
+      "id": "text_1",
+      "label": "Announcement text 1",
+      "default": "Free shipping on US orders over $100"
+    },
+    {
+      "type": "text",
+      "id": "text_2",
+      "label": "Announcement text 2",
+      "default": "We Customize. We Compound. We Care."
+    },
+    {
+      "type": "text",
+      "id": "text_3",
+      "label": "Announcement text 3",
+      "default": "Shop Our Supplements Today"
+    },
+    {
+      "type": "color",
+      "id": "bg_color",
+      "label": "Background color",
+      "default": "#1a1a1a"
+    },
+    {
+      "type": "color",
+      "id": "text_color",
+      "label": "Text color",
+      "default": "#ffffff"
+    },
+    {
+      "type": "range",
+      "id": "speed",
+      "label": "Scroll speed (seconds)",
+      "min": 10,
+      "max": 300,
+      "step": 5,
+      "default": 30
+    }
+  ],
+  "presets": [
+    {
+      "name": "Scrolling Announcement"
+    }
+  ]
+}
+{% endschema %}

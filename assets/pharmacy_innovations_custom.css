@@ -1,0 +1,523 @@
+/* ============================================
+   PHARMACY INNOVATIONS - WONDER ROOT STYLE
+   Custom CSS for Shopify Sense Theme
+   Brand Colors: Navy #2e3192, Cyan #38c6f4
+   ============================================ */
+
+/* ---------- GLOBAL TYPOGRAPHY ---------- */
+:root {
+  --color-brand-navy: #2e3192;
+  --color-brand-cyan: #38c6f4;
+  --color-brand-cyan-hover: #1faddb;
+  --color-brand-purple: #7f54b3;
+  --color-text-dark: #1a1a1a;
+  --color-text-body: #555555;
+  --color-bg-light: #f9f7f4;
+  --color-bg-white: #ffffff;
+}
+
+/* Bold, modern headings like Wonder Root */
+h1, h2, h3, .h1, .h2, .h3,
+.banner__heading,
+.rich-text__heading,
+.collection-hero__title,
+.featured-collection__title {
+  font-weight: 800 !important;
+  letter-spacing: -0.02em !important;
+  text-transform: uppercase !important;
+  color: var(--color-text-dark) !important;
+  line-height: 1.05 !important;
+}
+
+h1, .h1, .banner__heading {
+  font-size: clamp(2.5rem, 6vw, 4.5rem) !important;
+}
+
+h2, .h2, .rich-text__heading,
+.featured-collection__title {
+  font-size: clamp(2rem, 4vw, 3.2rem) !important;
+}
+
+/* Subheadings / small text above headings */
+.banner__subheading,
+.rich-text__caption,
+.caption,
+.subtitle {
+  font-size: 0.75rem !important;
+  letter-spacing: 0.15em !important;
+  text-transform: uppercase !important;
+  color: var(--color-brand-cyan) !important;
+  font-weight: 600 !important;
+}
+
+/* Body text */
+body, p, .rte {
+  color: var(--color-text-body) !important;
+  line-height: 1.7 !important;
+}
+
+/* ---------- ANNOUNCEMENT BAR ---------- */
+.announcement-bar {
+  background-color: var(--color-brand-navy) !important;
+  color: #ffffff !important;
+  font-size: 0.8rem !important;
+  letter-spacing: 0.08em !important;
+  text-transform: uppercase !important;
+  padding: 8px 0 !important;
+  border: none !important;
+}
+
+.announcement-bar a,
+.announcement-bar__link,
+.announcement-bar__message {
+  color: #ffffff !important;
+}
+
+/* ---------- HEADER / NAVIGATION ---------- */
+.header-wrapper {
+  border-bottom: 1px solid rgba(0,0,0,0.08) !important;
+  box-shadow: none !important;
+  background: rgba(245, 243, 240, 0.95) !important;
+  backdrop-filter: blur(10px) !important;
+  -webkit-backdrop-filter: blur(10px) !important;
+  position: relative !important;
+  z-index: 10 !important;
+  margin-bottom: 0 !important;
+}
+
+/* Force single-line header layout */
+.header {
+  padding: 8px 20px !important;
+  display: flex !important;
+  flex-wrap: nowrap !important;
+  align-items: center !important;
+  gap: 0 !important;
+  flex-direction: row !important;
+  justify-content: flex-start !important;
+}
+
+/* Override Sense theme's grid/stacked header layout */
+.header--top-left,
+.header--middle-left,
+.header--top-center,
+.header--middle-center {
+  display: flex !important;
+  flex-wrap: nowrap !important;
+  grid-template: none !important;
+  justify-content: flex-start !important;
+  padding-left: 20px !important;
+  padding-right: 20px !important;
+}
+
+/* Remove gap between header and hero */
+.section-header {
+  margin-bottom: 0 !important;
+  padding-bottom: 0 !important;
+}
+
+.shopify-section-group-header-group {
+  margin-bottom: 0 !important;
+}
+
+.shopify-section-group-header-group + .shopify-section,
+.shopify-section-group-header-group + .shopify-section-group-template {
+  margin-top: 0 !important;
+}
+
+.split-hero {
+  margin-top: 0 !important;
+}
+
+/* Remove any top padding/margin from first template section */
+.shopify-section:first-child .split-hero,
+main .shopify-section:first-child {
+  margin-top: 0 !important;
+  padding-top: 0 !important;
+}
+
+/* Logo far left and bigger */
+.header__heading {
+  margin-right: 2.5rem !important;
+  flex-shrink: 0 !important;
+  order: 1 !important;
+}
+
+.header__heading-link {
+  font-size: 1.4rem !important;
+  font-weight: 800 !important;
+  letter-spacing: -0.01em !important;
+  color: var(--color-text-dark) !important;
+}
+
+.header__heading-link img {
+  max-height: 60px !important;
+  max-width: 400px !important;
+  width: auto !important;
+  height: auto !important;
+}
+
+/* Nav right next to logo on same line */
+.header__inline-menu {
+  margin-right: auto !important;
+  margin-left: 0 !important;
+  order: 2 !important;
+  display: flex !important;
+  flex-grow: 0 !important;
+}
+
+.header nav {
+  order: 2 !important;
+}
+
+.header__inline-menu .list-menu {
+  gap: 1.5rem !important;
+  flex-wrap: nowrap !important;
+  justify-content: flex-start !important;
+}
+
+/* Nav links */
+.header__menu-item,
+.header__menu-item span,
+.menu-drawer__menu-item {
+  font-size: 0.8rem !important;
+  font-weight: 600 !important;
+  letter-spacing: 0.1em !important;
+  text-transform: uppercase !important;
+  color: var(--color-text-dark) !important;
+}
+
+.header__menu-item:hover,
+.header__menu-item:hover span {
+  color: var(--color-brand-cyan) !important;
+}
+
+/* Icons pushed to far right */
+.header__icons {
+  margin-left: auto !important;
+  flex-shrink: 0 !important;
+  order: 3 !important;
+}
+
+.header__icon {
+  color: var(--color-text-dark) !important;
+}
+
+/* Mega menu / dropdown styling */
+.header__submenu,
+.mega-menu__content {
+  background-color: #ffffff !important;
+  border-top: 2px solid var(--color-brand-cyan) !important;
+  box-shadow: 0 8px 30px rgba(0,0,0,0.1) !important;
+  padding: 2rem !important;
+}
+
+.mega-menu__link {
+  font-size: 0.85rem !important;
+  font-weight: 600 !important;
+  color: var(--color-text-dark) !important;
+  text-transform: uppercase !important;
+  letter-spacing: 0.05em !important;
+}
+
+.mega-menu__link:hover {
+  color: var(--color-brand-cyan) !important;
+}
+
+/* ---------- BUTTONS ---------- */
+.button,
+.shopify-challenge__button,
+button.button,
+a.button,
+.form__submit,
+.cart__submit,
+.shopify-payment-button__button {
+  background-color: var(--color-brand-cyan) !important;
+  color: #ffffff !important;
+  border: none !important;
+  border-radius: 0 !important;
+  font-weight: 700 !important;
+  font-size: 0.75rem !important;
+  letter-spacing: 0.15em !important;
+  text-transform: uppercase !important;
+  padding: 16px 36px !important;
+  transition: all 0.3s ease !important;
+}
+
+.button:hover,
+a.button:hover,
+.form__submit:hover,
+.cart__submit:hover {
+  background-color: var(--color-brand-cyan-hover) !important;
+  color: #ffffff !important;
+  transform: translateY(-1px) !important;
+}
+
+/* Secondary / outline buttons */
+.button--secondary,
+.button--tertiary {
+  background-color: transparent !important;
+  color: var(--color-text-dark) !important;
+  border: 2px solid var(--color-text-dark) !important;
+}
+
+.button--secondary:hover,
+.button--tertiary:hover {
+  background-color: var(--color-text-dark) !important;
+  color: #ffffff !important;
+}
+
+/* ---------- HERO / BANNER SECTION ---------- */
+.banner {
+  min-height: 85vh !important;
+}
+
+.banner__content {
+  max-width: 600px !important;
+}
+
+.banner__box {
+  background: transparent !important;
+  padding: 2rem !important;
+}
+
+/* ---------- IMAGE BANNER / SLIDESHOW ---------- */
+.image-with-text {
+  background-color: var(--color-bg-light) !important;
+}
+
+.image-with-text__content {
+  padding: 3rem !important;
+}
+
+/* ---------- FEATURED COLLECTION ---------- */
+.collection-list,
+.featured-collection {
+  padding-top: 4rem !important;
+  padding-bottom: 4rem !important;
+}
+
+/* Product cards */
+.card-wrapper {
+  border-radius: 0 !important;
+  overflow: hidden;
+}
+
+.card__heading a {
+  font-weight: 600 !important;
+  font-size: 0.95rem !important;
+  color: var(--color-text-dark) !important;
+}
+
+.card__heading a:hover {
+  color: var(--color-brand-cyan) !important;
+}
+
+.price-item {
+  font-weight: 700 !important;
+  color: var(--color-text-dark) !important;
+}
+
+/* Card hover effect */
+.card-wrapper:hover .card__media img {
+  transform: scale(1.05) !important;
+  transition: transform 0.6s ease !important;
+}
+
+.card__media img {
+  transition: transform 0.6s ease !important;
+}
+
+/* ---------- RICH TEXT SECTION ---------- */
+.rich-text {
+  padding-top: 5rem !important;
+  padding-bottom: 5rem !important;
+}
+
+.rich-text .button {
+  margin-top: 1.5rem !important;
+}
+
+/* ---------- COLLECTION LIST / GRID ---------- */
+.collection-list__item .card__content {
+  text-align: center !important;
+}
+
+.collection-list__item .card__heading {
+  font-size: 1.1rem !important;
+  font-weight: 700 !important;
+  text-transform: uppercase !important;
+  letter-spacing: 0.08em !important;
+}
+
+/* ---------- IMAGE WITH TEXT ---------- */
+.image-with-text .image-with-text__heading {
+  font-size: clamp(2rem, 4vw, 3rem) !important;
+  font-weight: 800 !important;
+  text-transform: uppercase !important;
+  line-height: 1.1 !important;
+}
+
+/* ---------- NEWSLETTER SECTION ---------- */
+.newsletter {
+  background-color: #2e3192 !important;
+  color: #ffffff !important;
+  padding: 4rem 0 !important;
+}
+
+.newsletter h2,
+.newsletter .newsletter__heading,
+.newsletter__heading {
+  color: #ffffff !important;
+}
+
+.newsletter__subheading,
+.newsletter p,
+.newsletter .rte {
+  color: rgba(255,255,255,0.85) !important;
+}
+
+.newsletter .field__input {
+  border-radius: 0 !important;
+  border: 1px solid rgba(255,255,255,0.3) !important;
+  background: rgba(255,255,255,0.1) !important;
+  color: #ffffff !important;
+}
+
+.newsletter .field__input::placeholder {
+  color: rgba(255,255,255,0.5) !important;
+}
+
+.newsletter .field__label {
+  color: rgba(255,255,255,0.5) !important;
+}
+
+.newsletter .newsletter__button,
+.newsletter .button {
+  background-color: #38c6f4 !important;
+  color: #ffffff !important;
+  border-color: #38c6f4 !important;
+}
+
+.newsletter .newsletter__button:hover,
+.newsletter .button:hover {
+  background-color: #1faddb !important;
+}
+
+/* ---------- FOOTER ---------- */
+.footer {
+  background-color: #ffffff !important;
+  color: #555555 !important;
+  padding-top: 4rem !important;
+  padding-bottom: 2rem !important;
+}
+
+.footer h2,
+.footer .footer-block__heading {
+  color: #1a1a1a !important;
+  font-size: 0.8rem !important;
+  font-weight: 700 !important;
+  text-transform: uppercase !important;
+  letter-spacing: 0.12em !important;
+}
+
+.footer a {
+  color: #555555 !important;
+  transition: color 0.2s ease !important;
+}
+
+.footer a:hover {
+  color: var(--color-brand-cyan) !important;
+}
+
+.footer__copyright {
+  color: #999999 !important;
+  font-size: 0.75rem !important;
+}
+
+.footer__content-bottom {
+  background-color: #ffffff !important;
+}
+
+.section-footer {
+  background-color: #ffffff !important;
+}
+
+/* ---------- LINKS / ACCENTS ---------- */
+a {
+  color: var(--color-brand-navy) !important;
+  transition: color 0.2s ease !important;
+}
+
+a:hover {
+  color: var(--color-brand-cyan) !important;
+}
+
+/* ---------- GENERAL SPACING & POLISH ---------- */
+.section-template--*,
+.shopify-section {
+  border: none !important;
+}
+
+/* Remove rounded corners for cleaner look */
+.card,
+.card__media,
+input,
+select,
+textarea,
+.field__input {
+  border-radius: 0 !important;
+}
+
+/* Clean section dividers */
+.shopify-section + .shopify-section {
+  border-top: none !important;
+}
+
+/* Smooth scrolling */
+html {
+  scroll-behavior: smooth;
+}
+
+/* ---------- MOBILE RESPONSIVE TWEAKS ---------- */
+@media (max-width: 749px) {
+  h1, .h1, .banner__heading {
+    font-size: 2.2rem !important;
+  }
+
+  h2, .h2, .rich-text__heading {
+    font-size: 1.8rem !important;
+  }
+
+  .banner {
+    min-height: 60vh !important;
+  }
+
+  .button,
+  a.button {
+    padding: 14px 28px !important;
+    font-size: 0.7rem !important;
+  }
+
+  .rich-text {
+    padding-top: 3rem !important;
+    padding-bottom: 3rem !important;
+  }
+}
+
+/* ---------- SCROLLBAR STYLING ---------- */
+::-webkit-scrollbar {
+  width: 6px;
+}
+
+::-webkit-scrollbar-track {
+  background: #f1f1f1;
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--color-brand-navy);
+  border-radius: 3px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--color-brand-cyan);
+}

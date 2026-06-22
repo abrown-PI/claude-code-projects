@@ -1,0 +1,372 @@
+{% doc %}
+  @prompt
+    Edit the existing Supplement Facts block (section ID: template--20701053616355__blocks_c4gawR, block ID: template--20701053616355__blocks_c4gawR__ai_gen_block_01d5ef5_zrmV8Q). Do NOT create a new section. Modify it to: 1) Above the ingredient table, display three bold labeled rows in a single row with headers: Package Size (from custom.package_size), Serving Size (from custom.specifications), and Servings Per Container (from custom.serving_per_container) — bold labels, values below each. 2) Parse the custom.supplement_facts metafield line by line — each line is formatted as "Ingredient Name - Amount Per Serving" — split on the dash to populate a two-column FDA-style table with headers "Ingredient" and "Amount Per Serving". Style with navy blue (#2E3192) table header row, clean borders, clinical pharmacy aesthetic.
+{% enddoc %}
+{% assign ai_gen_id = block.id | replace: '_', '' | downcase %}
+
+{% style %}
+  .ai-supplement-facts-{{ ai_gen_id }} {
+    display: block;
+    width: {{ block.settings.desktop_width_percent }}%;
+    max-width: 100%;
+    padding: 24px;
+    background-color: {{ block.settings.background_color }};
+    border: {{ block.settings.border_thickness }}px solid {{ block.settings.border_color }};
+    border-radius: {{ block.settings.border_radius }}px;
+    font-family: {{ block.settings.font.family }}, sans-serif;
+    font-weight: {{ block.settings.font.weight }};
+    font-style: {{ block.settings.font.style }};
+  }
+
+  .ai-supplement-facts-title-{{ ai_gen_id }} {
+    font-size: {{ block.settings.title_size }}px;
+    font-weight: 700;
+    color: {{ block.settings.title_color }};
+    margin: 0 0 16px 0;
+    text-align: {{ block.settings.text_alignment }};
+  }
+
+  .ai-supplement-facts-meta-row-{{ ai_gen_id }} {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 16px;
+    margin-bottom: 20px;
+    padding-bottom: 16px;
+    border-bottom: 2px solid {{ block.settings.border_color }};
+  }
+
+  .ai-supplement-facts-meta-item-{{ ai_gen_id }} {
+    text-align: center;
+  }
+
+  .ai-supplement-facts-meta-label-{{ ai_gen_id }} {
+    font-size: {{ block.settings.meta_label_size }}px;
+    font-weight: 700;
+    color: {{ block.settings.text_color }};
+    margin-bottom: 4px;
+  }
+
+  .ai-supplement-facts-meta-value-{{ ai_gen_id }} {
+    font-size: {{ block.settings.meta_value_size }}px;
+    color: {{ block.settings.text_color }};
+  }
+
+  .ai-supplement-facts-table-{{ ai_gen_id }} {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 16px;
+  }
+
+  .ai-supplement-facts-table-{{ ai_gen_id }} thead {
+    background-color: #2E3192;
+  }
+
+  .ai-supplement-facts-table-{{ ai_gen_id }} th {
+    padding: 12px;
+    text-align: left;
+    font-size: {{ block.settings.table_header_size }}px;
+    font-weight: 700;
+    color: #ffffff;
+    border: 1px solid {{ block.settings.table_border_color }};
+  }
+
+  .ai-supplement-facts-table-{{ ai_gen_id }} td {
+    padding: 10px 12px;
+    font-size: {{ block.settings.table_text_size }}px;
+    color: {{ block.settings.text_color }};
+    border: 1px solid {{ block.settings.table_border_color }};
+  }
+
+  .ai-supplement-facts-table-{{ ai_gen_id }} tbody tr:nth-child(even) {
+    background-color: {{ block.settings.table_row_alt_color }};
+  }
+
+  .ai-supplement-facts-empty-{{ ai_gen_id }} {
+    padding: 20px;
+    text-align: center;
+    color: #999;
+    font-style: italic;
+    font-size: 14px;
+  }
+
+  @media screen and (max-width: 749px) {
+    .ai-supplement-facts-{{ ai_gen_id }} {
+      width: 100%;
+      padding: 16px;
+    }
+
+    .ai-supplement-facts-meta-row-{{ ai_gen_id }} {
+      grid-template-columns: 1fr;
+      gap: 12px;
+    }
+
+    .ai-supplement-facts-table-{{ ai_gen_id }} th,
+    .ai-supplement-facts-table-{{ ai_gen_id }} td {
+      padding: 8px;
+      font-size: 13px;
+    }
+  }
+{% endstyle %}
+
+<supplement-facts-{{ ai_gen_id }}
+  class="ai-supplement-facts-{{ ai_gen_id }}"
+  {{ block.shopify_attributes }}
+>
+  {% if block.settings.title != blank %}
+    <h3 class="ai-supplement-facts-title-{{ ai_gen_id }}">{{ block.settings.title }}</h3>
+  {% endif %}
+
+  <div class="ai-supplement-facts-meta-row-{{ ai_gen_id }}">
+    <div class="ai-supplement-facts-meta-item-{{ ai_gen_id }}">
+      <div class="ai-supplement-facts-meta-label-{{ ai_gen_id }}">Package Size</div>
+      <div class="ai-supplement-facts-meta-value-{{ ai_gen_id }}">
+        {% if product.metafields.custom.package_size != blank %}
+          {{ product.metafields.custom.package_size }}
+        {% else %}
+          <span style="color: #999; font-style: italic;">Not specified</span>
+        {% endif %}
+      </div>
+    </div>
+
+    <div class="ai-supplement-facts-meta-item-{{ ai_gen_id }}">
+      <div class="ai-supplement-facts-meta-label-{{ ai_gen_id }}">Serving Size</div>
+      <div class="ai-supplement-facts-meta-value-{{ ai_gen_id }}">
+        {% if product.metafields.custom.specifications != blank %}
+          {{ product.metafields.custom.specifications }}
+        {% else %}
+          <span style="color: #999; font-style: italic;">Not specified</span>
+        {% endif %}
+      </div>
+    </div>
+
+    <div class="ai-supplement-facts-meta-item-{{ ai_gen_id }}">
+      <div class="ai-supplement-facts-meta-label-{{ ai_gen_id }}">Servings Per Container</div>
+      <div class="ai-supplement-facts-meta-value-{{ ai_gen_id }}">
+        {% if product.metafields.custom.serving_per_container != blank %}
+          {{ product.metafields.custom.serving_per_container }}
+        {% else %}
+          <span style="color: #999; font-style: italic;">Not specified</span>
+        {% endif %}
+      </div>
+    </div>
+  </div>
+
+  {% if product.metafields.custom.supplement_facts != blank %}
+    {% assign facts_lines = product.metafields.custom.supplement_facts | newline_to_br | split: '<br />' %}
+    
+    <table class="ai-supplement-facts-table-{{ ai_gen_id }}">
+      <thead>
+        <tr>
+          <th>Ingredient</th>
+          <th>Amount Per Serving</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for line in facts_lines %}
+          {% assign trimmed_line = line | strip %}
+          {% if trimmed_line != blank %}
+            {% assign parts = trimmed_line | split: '-' %}
+            {% if parts.size >= 2 %}
+              <tr>
+                <td>{{ parts[0] | strip }}</td>
+                <td>{{ parts[1] | strip }}</td>
+              </tr>
+            {% endif %}
+          {% endif %}
+        {% endfor %}
+      </tbody>
+    </table>
+  {% else %}
+    <div class="ai-supplement-facts-empty-{{ ai_gen_id }}">
+      Add supplement facts to product metafield: custom.supplement_facts
+    </div>
+  {% endif %}
+</supplement-facts-{{ ai_gen_id }}>
+
+<script>
+  (function() {
+    class SupplementFacts{{ ai_gen_id }} extends HTMLElement {
+      constructor() {
+        super();
+      }
+
+      connectedCallback() {
+      }
+    }
+
+    customElements.define('supplement-facts-{{ ai_gen_id }}', SupplementFacts{{ ai_gen_id }});
+  })();
+</script>
+
+{% schema %}
+{
+  "name": "Supplement facts",
+  "settings": [
+    {
+      "type": "header",
+      "content": "Content"
+    },
+    {
+      "type": "inline_richtext",
+      "id": "title",
+      "label": "Title",
+      "default": "Supplement Facts"
+    },
+    {
+      "type": "select",
+      "id": "text_alignment",
+      "label": "Title alignment",
+      "options": [
+        {
+          "value": "left",
+          "label": "Left"
+        },
+        {
+          "value": "center",
+          "label": "Center"
+        },
+        {
+          "value": "right",
+          "label": "Right"
+        }
+      ],
+      "default": "left"
+    },
+    {
+      "type": "range",
+      "id": "desktop_width_percent",
+      "label": "Desktop width",
+      "min": 50,
+      "max": 100,
+      "step": 5,
+      "unit": "%",
+      "default": 100
+    },
+    {
+      "type": "header",
+      "content": "Style"
+    },
+    {
+      "type": "color",
+      "id": "background_color",
+      "label": "Background",
+      "default": "#ffffff"
+    },
+    {
+      "type": "color",
+      "id": "title_color",
+      "label": "Title color",
+      "default": "#2E3192"
+    },
+    {
+      "type": "color",
+      "id": "text_color",
+      "label": "Text color",
+      "default": "#323234"
+    },
+    {
+      "type": "color",
+      "id": "border_color",
+      "label": "Border color",
+      "default": "#d1d1d1"
+    },
+    {
+      "type": "color",
+      "id": "table_border_color",
+      "label": "Table border color",
+      "default": "#d1d1d1"
+    },
+    {
+      "type": "color",
+      "id": "table_row_alt_color",
+      "label": "Table alternate row",
+      "default": "#f9f9f9"
+    },
+    {
+      "type": "range",
+      "id": "border_thickness",
+      "label": "Border thickness",
+      "min": 0,
+      "max": 4,
+      "step": 1,
+      "unit": "px",
+      "default": 1
+    },
+    {
+      "type": "range",
+      "id": "border_radius",
+      "label": "Border radius",
+      "min": 0,
+      "max": 20,
+      "step": 2,
+      "unit": "px",
+      "default": 8
+    },
+    {
+      "type": "header",
+      "content": "Typography"
+    },
+    {
+      "type": "font_picker",
+      "id": "font",
+      "label": "Font",
+      "default": "inter_n4"
+    },
+    {
+      "type": "range",
+      "id": "title_size",
+      "label": "Title size",
+      "min": 14,
+      "max": 32,
+      "step": 2,
+      "unit": "px",
+      "default": 20
+    },
+    {
+      "type": "range",
+      "id": "meta_label_size",
+      "label": "Meta label size",
+      "min": 10,
+      "max": 18,
+      "step": 1,
+      "unit": "px",
+      "default": 12
+    },
+    {
+      "type": "range",
+      "id": "meta_value_size",
+      "label": "Meta value size",
+      "min": 12,
+      "max": 20,
+      "step": 1,
+      "unit": "px",
+      "default": 14
+    },
+    {
+      "type": "range",
+      "id": "table_header_size",
+      "label": "Table header size",
+      "min": 12,
+      "max": 20,
+      "step": 1,
+      "unit": "px",
+      "default": 14
+    },
+    {
+      "type": "range",
+      "id": "table_text_size",
+      "label": "Table text size",
+      "min": 12,
+      "max": 18,
+      "step": 1,
+      "unit": "px",
+      "default": 14
+    }
+  ],
+  "presets": [
+    {
+      "name": "Supplement facts"
+    }
+  ]
+}
+{% endschema %}

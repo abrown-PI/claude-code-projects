@@ -1,0 +1,313 @@
+{%- style -%}
+  .split-hero {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    min-height: 60vh;
+    overflow: hidden;
+  }
+  .split-hero__left {
+    position: relative;
+    overflow: hidden;
+  }
+  .split-hero__left img,
+  .split-hero__left video {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+  }
+  .split-hero__left video {
+    object-position: center;
+  }
+  .split-hero__left-overlay {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    top: 0;
+    padding: 3rem 3rem;
+    display: flex;
+    flex-direction: column;
+    justify-content: {{ section.settings.text_position }};
+    background: rgba(0,0,0,{{ section.settings.overlay_opacity | divided_by: 100.0 }});
+    z-index: 2;
+  }
+  .split-hero__subtitle {
+    font-size: {{ section.settings.subtitle_size }}px;
+    font-weight: 600;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: {{ section.settings.subtitle_color }} !important;
+    margin-bottom: 1rem;
+  }
+  .split-hero__heading {
+    font-size: {{ section.settings.heading_size }}px;
+    font-weight: 800;
+    line-height: 1.05;
+    text-transform: uppercase;
+    letter-spacing: -0.02em;
+    color: {{ section.settings.heading_color }} !important;
+    margin: 0 0 1.5rem 0;
+  }
+  .split-hero__text {
+    font-size: {{ section.settings.body_size }}px;
+    line-height: 1.4;
+    color: {{ section.settings.text_color }} !important;
+    margin-bottom: 2rem;
+    max-width: 100%;
+  }
+  .split-hero__text p {
+    margin: 0;
+  }
+  .split-hero__button {
+    display: inline-block;
+    width: auto;
+    background-color: {{ section.settings.button_bg }};
+    color: {{ section.settings.button_text }} !important;
+    padding: 14px 36px;
+    font-size: 0.75rem;
+    font-weight: 700;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    text-decoration: none;
+    border: none;
+    transition: all 0.3s ease;
+    align-self: flex-start;
+  }
+  .split-hero__button:hover {
+    opacity: 0.85;
+  }
+  .split-hero__right {
+    position: relative;
+    overflow: hidden;
+  }
+  .split-hero__right img,
+  .split-hero__right video {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+  }
+  @media (max-width: 749px) {
+    .split-hero {
+      grid-template-columns: 1fr;
+      min-height: auto;
+    }
+    .split-hero__left {
+      min-height: 50vh;
+    }
+    .split-hero__right {
+      min-height: 40vh;
+    }
+    .split-hero__heading {
+      font-size: 1.8rem;
+    }
+    .split-hero__left-overlay {
+      padding: 2rem;
+    }
+  }
+{%- endstyle -%}
+
+<section class="split-hero">
+  {%- comment -%} LEFT SIDE: Video with text overlay {%- endcomment -%}
+  <div class="split-hero__left">
+    {%- if section.settings.left_video != blank -%}
+      {{ section.settings.left_video | video_tag: autoplay: true, loop: true, muted: true, playsinline: true }}
+    {%- elsif section.settings.left_video_url != blank -%}
+      <video autoplay loop muted playsinline>
+        <source src="{{ section.settings.left_video_url }}" type="video/mp4">
+      </video>
+    {%- elsif section.settings.left_image != blank -%}
+      {{ section.settings.left_image | image_url: width: 1200 | image_tag: loading: 'eager', widths: '600,800,1000,1200' }}
+    {%- else -%}
+      <div style="background: linear-gradient(135deg, #1a1a1a 0%, #2e3192 100%); width:100%; height:100%;"></div>
+    {%- endif -%}
+
+    <div class="split-hero__left-overlay">
+      {%- if section.settings.subtitle != blank -%}
+        <p class="split-hero__subtitle">{{ section.settings.subtitle }}</p>
+      {%- endif -%}
+
+      <h1 class="split-hero__heading">{{ section.settings.heading }}</h1>
+
+      {%- if section.settings.text != blank -%}
+        <div class="split-hero__text">{{ section.settings.text }}</div>
+      {%- endif -%}
+
+      {%- if section.settings.button_label != blank -%}
+        <a href="{{ section.settings.button_link }}" class="split-hero__button">
+          {{ section.settings.button_label }}
+        </a>
+      {%- endif -%}
+    </div>
+  </div>
+
+  {%- comment -%} RIGHT SIDE: Image {%- endcomment -%}
+  <div class="split-hero__right">
+    {%- if section.settings.right_image != blank -%}
+      {{ section.settings.right_image | image_url: width: 1200 | image_tag: loading: 'eager', widths: '600,800,1000,1200' }}
+    {%- else -%}
+      <div style="background: linear-gradient(135deg, #f9f7f4 0%, #e8e4df 100%); width:100%; height:100%;"></div>
+    {%- endif -%}
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Split Hero",
+  "settings": [
+    {
+      "type": "header",
+      "content": "Text Content"
+    },
+    {
+      "type": "text",
+      "id": "subtitle",
+      "label": "Subtitle",
+      "default": "The Future of Wellness"
+    },
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "Heading",
+      "default": "GEAR UP FOR GREAT HEALTH"
+    },
+    {
+      "type": "richtext",
+      "id": "text",
+      "label": "Description",
+      "default": "<p>Discover our premium line of supplements, carefully crafted to support your wellness journey.</p>"
+    },
+    {
+      "type": "text",
+      "id": "button_label",
+      "label": "Button label",
+      "default": "Shop Now"
+    },
+    {
+      "type": "url",
+      "id": "button_link",
+      "label": "Button link"
+    },
+    {
+      "type": "header",
+      "content": "Text Layout"
+    },
+    {
+      "type": "select",
+      "id": "text_position",
+      "label": "Text position",
+      "options": [
+        { "value": "flex-start", "label": "Top" },
+        { "value": "center", "label": "Middle" },
+        { "value": "flex-end", "label": "Bottom" }
+      ],
+      "default": "flex-start"
+    },
+    {
+      "type": "range",
+      "id": "heading_size",
+      "label": "Heading text size (px)",
+      "min": 20,
+      "max": 72,
+      "step": 2,
+      "default": 40
+    },
+    {
+      "type": "range",
+      "id": "subtitle_size",
+      "label": "Subtitle text size (px)",
+      "min": 10,
+      "max": 24,
+      "step": 1,
+      "default": 12
+    },
+    {
+      "type": "range",
+      "id": "body_size",
+      "label": "Description text size (px)",
+      "min": 12,
+      "max": 24,
+      "step": 1,
+      "default": 15
+    },
+    {
+      "type": "range",
+      "id": "overlay_opacity",
+      "label": "Overlay darkness (%)",
+      "min": 0,
+      "max": 80,
+      "step": 5,
+      "default": 0,
+      "info": "0 = no overlay, 80 = very dark"
+    },
+    {
+      "type": "header",
+      "content": "Left Side (Video or Image)"
+    },
+    {
+      "type": "video",
+      "id": "left_video",
+      "label": "Shopify-hosted video"
+    },
+    {
+      "type": "text",
+      "id": "left_video_url",
+      "label": "Or external video URL (mp4)"
+    },
+    {
+      "type": "image_picker",
+      "id": "left_image",
+      "label": "Fallback image (if no video)"
+    },
+    {
+      "type": "header",
+      "content": "Right Side (Image)"
+    },
+    {
+      "type": "image_picker",
+      "id": "right_image",
+      "label": "Right side image"
+    },
+    {
+      "type": "header",
+      "content": "Colors"
+    },
+    {
+      "type": "color",
+      "id": "heading_color",
+      "label": "Heading color",
+      "default": "#ffffff"
+    },
+    {
+      "type": "color",
+      "id": "subtitle_color",
+      "label": "Subtitle color",
+      "default": "#38c6f4"
+    },
+    {
+      "type": "color",
+      "id": "text_color",
+      "label": "Text color",
+      "default": "#cccccc"
+    },
+    {
+      "type": "color",
+      "id": "button_bg",
+      "label": "Button background",
+      "default": "#38c6f4"
+    },
+    {
+      "type": "color",
+      "id": "button_text",
+      "label": "Button text",
+      "default": "#ffffff"
+    }
+  ],
+  "presets": [
+    {
+      "name": "Split Hero"
+    }
+  ]
+}
+{% endschema %}

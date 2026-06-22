@@ -1,0 +1,807 @@
+{%- style -%}
+  /* Full Width Banner */
+  .iw-banner {
+    position: relative;
+    width: 100%;
+    min-height: {{ section.settings.banner_height }}vh;
+    overflow: hidden;
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+  }
+  .iw-banner__img {
+    position: absolute;
+    top: 0; left: 0; right: 0; bottom: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center {{ section.settings.image_focus }};
+  }
+  .iw-banner__overlay {
+    position: absolute;
+    top: 0; left: 0; right: 0; bottom: 0;
+    background: linear-gradient(to right, rgba(0,0,0,{{ section.settings.banner_overlay | divided_by: 100.0 }}) 0%, rgba(0,0,0,{{ section.settings.banner_overlay | divided_by: 200.0 }}) 50%, transparent 100%);
+    z-index: 1;
+  }
+  .iw-banner__content {
+    position: relative;
+    z-index: 2;
+    max-width: 600px;
+    width: 100%;
+    padding: 3rem 4rem;
+  }
+  .iw-banner__label {
+    font-size: {{ section.settings.label_size }}px;
+    font-weight: 600;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: {{ section.settings.label_color }};
+    margin-bottom: 1rem;
+  }
+  .iw-banner__title {
+    font-size: {{ section.settings.title_size }}px;
+    font-weight: 300;
+    line-height: 1.15;
+    color: {{ section.settings.title_color }};
+    margin: 0 0 1rem;
+  }
+  .iw-banner__title em {
+    font-weight: 700;
+    font-style: italic;
+  }
+  .iw-banner__subtitle {
+    font-size: {{ section.settings.subtitle_size }}px;
+    line-height: 1.7;
+    color: {{ section.settings.subtitle_color }};
+    max-width: 100%;
+    margin-bottom: 2rem;
+  }
+  .iw-banner__btn {
+    display: inline-block;
+    background: {{ section.settings.btn_bg }};
+    color: {{ section.settings.btn_text_color }};
+    padding: {{ section.settings.btn_padding }}px {{ section.settings.btn_padding | times: 3 }}px;
+    font-size: {{ section.settings.btn_size }}px;
+    font-weight: 700;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    text-decoration: none;
+    border: 2px solid {{ section.settings.btn_border }};
+    transition: all 0.3s ease;
+  }
+  .iw-banner__btn:hover {
+    background: #ffffff;
+    color: #2e3192;
+  }
+
+  /* Intro Text Strip */
+  .iw-intro {
+    text-align: center;
+    padding: 4rem 2rem;
+    background: #ffffff;
+  }
+  .iw-intro__tagline {
+    font-size: {{ section.settings.intro_tagline_size }}px;
+    font-weight: 700;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: #38c6f4;
+    margin-bottom: 1.5rem;
+  }
+  .iw-intro__heading {
+    font-size: {{ section.settings.intro_heading_size }}px;
+    font-weight: 300;
+    color: #1a1a1a;
+    max-width: 750px;
+    margin: 0 auto 1.5rem;
+    line-height: 1.4;
+  }
+  .iw-intro__heading strong {
+    font-weight: 800;
+    color: #2e3192;
+  }
+  .iw-intro__line {
+    width: 60px;
+    height: 3px;
+    background: #38c6f4;
+    margin: 0 auto;
+  }
+
+  /* Three Pillars */
+  .iw-pillars {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    max-width: 1400px;
+    margin: 0 auto;
+    padding: 0 2rem 5rem;
+    gap: 2rem;
+  }
+  .iw-pillar {
+    text-align: center;
+    padding: 2.5rem 2.5rem;
+    border: 1px solid rgba(0,0,0,0.06);
+    border-radius: 4px;
+    transition: box-shadow 0.3s ease;
+  }
+  .iw-pillar:hover {
+    box-shadow: 0 8px 30px rgba(46,49,146,0.08);
+  }
+  .iw-pillar__number {
+    font-size: {{ section.settings.pillar_number_size }}px;
+    font-weight: 800;
+    color: #263d6a;
+    opacity: 0.3;
+    margin-bottom: 1rem;
+    line-height: 1;
+  }
+  .iw-pillar__title {
+    font-size: {{ section.settings.pillar_title_size }}px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: #263d6a;
+    margin-bottom: 0.75rem;
+  }
+  .iw-pillar__text {
+    font-size: {{ section.settings.pillar_text_size }}px;
+    line-height: 1.6;
+    color: #263d6a;
+  }
+
+  /* Image + Text Row */
+  .iw-split {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    min-height: 45vh;
+  }
+  .iw-split--reverse {
+    direction: rtl;
+  }
+  .iw-split--reverse > * {
+    direction: ltr;
+  }
+  .iw-split__image {
+    overflow: hidden;
+  }
+  .iw-split__image img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+  }
+  .iw-split__content {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    padding: 4rem;
+    background: {{ section.settings.split_bg | default: '#f9f7f4' }};
+  }
+  .iw-split__eyebrow {
+    font-size: {{ section.settings.bhrt_eyebrow_size }}px;
+    font-weight: 700;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: #38c6f4;
+    margin-bottom: 1rem;
+  }
+  .iw-split__heading {
+    font-size: {{ section.settings.bhrt_heading_size }}px;
+    font-weight: 800;
+    color: #2e3192;
+    line-height: 1.2;
+    margin: 0 0 1.5rem;
+  }
+  .iw-split__text {
+    font-size: {{ section.settings.bhrt_text_size }}px;
+    line-height: 1.7;
+    color: #555;
+    margin-bottom: 1.5rem;
+  }
+  .iw-split__list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+  }
+  .iw-split__list li {
+    padding: 0.4rem 0;
+    font-size: 0.9rem;
+    color: #555;
+    padding-left: 1.5rem;
+    position: relative;
+  }
+  .iw-split__list li::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 0.7rem;
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: #38c6f4;
+  }
+
+  /* Products */
+  .iw-products {
+    padding: 5rem 2rem;
+    background: #ffffff;
+    text-align: center;
+  }
+  .iw-products__label {
+    font-size: {{ section.settings.products_label_size }}px;
+    font-weight: 700;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: #38c6f4;
+    margin-bottom: 0.75rem;
+  }
+  .iw-products__heading {
+    font-size: {{ section.settings.products_heading_size }}px;
+    font-weight: 800;
+    color: #1a1a1a;
+    margin: 0 0 3rem;
+  }
+  .iw-products__grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 2rem;
+    max-width: 1200px;
+    margin: 0 auto;
+  }
+  .iw-product-card {
+    background: #f9f7f4;
+    border-radius: 6px;
+    overflow: hidden;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+  }
+  .iw-product-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 12px 30px rgba(0,0,0,0.08);
+  }
+  .iw-product-card__img {
+    aspect-ratio: 1/1;
+    overflow: hidden;
+    background: #ffffff;
+  }
+  .iw-product-card__img img {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    padding: 1.5rem;
+    transition: transform 0.4s ease;
+  }
+  .iw-product-card:hover .iw-product-card__img img {
+    transform: scale(1.05);
+  }
+  .iw-product-card__info {
+    padding: 1rem 1rem 1.5rem;
+    text-align: center;
+  }
+  .iw-product-card__title {
+    font-size: 0.9rem;
+    font-weight: 600;
+    color: #1a1a1a;
+    margin-bottom: 0.25rem;
+  }
+  .iw-product-card__title a {
+    text-decoration: none;
+    color: inherit;
+  }
+  .iw-product-card__title a:hover {
+    color: #2e3192;
+  }
+  .iw-product-card__price {
+    font-size: 0.9rem;
+    font-weight: 700;
+    color: #2e3192;
+  }
+  .iw-products__view-all {
+    display: inline-block;
+    margin-top: 3rem;
+    font-size: 0.8rem;
+    font-weight: 700;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: #1a1a1a;
+    text-decoration: none;
+    border-bottom: 2px solid #1a1a1a;
+    padding-bottom: 4px;
+    transition: all 0.3s ease;
+  }
+  .iw-products__view-all:hover {
+    color: #38c6f4;
+    border-color: #38c6f4;
+  }
+
+  /* Bottom CTA */
+  .iw-cta {
+    padding: 5rem 2rem;
+    background: linear-gradient(135deg, #2e3192 0%, #1a1a6e 100%);
+    text-align: center;
+    color: #ffffff;
+  }
+  .iw-cta__heading {
+    font-size: clamp(1.8rem, 3.5vw, 2.8rem);
+    font-weight: 300;
+    margin: 0 0 0.5rem;
+  }
+  .iw-cta__heading strong {
+    font-weight: 800;
+    color: #38c6f4;
+  }
+  .iw-cta__tagline {
+    font-size: 1.1rem;
+    font-style: italic;
+    color: rgba(255,255,255,0.6);
+    margin-bottom: 2.5rem;
+  }
+  .iw-cta__items {
+    display: flex;
+    justify-content: center;
+    gap: 3rem;
+    margin-bottom: 2.5rem;
+    flex-wrap: wrap;
+  }
+  .iw-cta__item-q {
+    font-size: 1rem;
+    font-weight: 700;
+    color: #38c6f4;
+  }
+  .iw-cta__item-a {
+    font-size: 0.95rem;
+    color: rgba(255,255,255,0.8);
+  }
+  .iw-cta__btn {
+    display: inline-block;
+    background: #38c6f4;
+    color: #ffffff;
+    padding: 14px 40px;
+    font-size: 0.8rem;
+    font-weight: 700;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    text-decoration: none;
+    border: 2px solid #38c6f4;
+    transition: all 0.3s ease;
+  }
+  .iw-cta__btn:hover {
+    background: transparent;
+    color: #38c6f4;
+  }
+
+  /* Responsive */
+  @media (max-width: 749px) {
+    .iw-banner__content { padding: 2rem; }
+    .iw-banner { min-height: 45vh; }
+    .iw-pillars { grid-template-columns: 1fr; gap: 1.5rem; padding: 0 2rem 3rem; }
+    .iw-split { grid-template-columns: 1fr; }
+    .iw-split--reverse { direction: ltr; }
+    .iw-split__content { padding: 3rem 2rem; }
+    .iw-split__image { min-height: 40vh; }
+    .iw-products__grid { grid-template-columns: repeat(2, 1fr); gap: 1rem; }
+    .iw-cta__items { flex-direction: column; gap: 1.5rem; }
+  }
+{%- endstyle -%}
+
+{%- comment -%} FULL WIDTH IMAGE BANNER {%- endcomment -%}
+<section class="iw-banner">
+  {%- if section.settings.banner_image != blank -%}
+    {{ section.settings.banner_image | image_url: width: 2000 | image_tag: class: 'iw-banner__img', loading: 'eager', widths: '800,1200,1600,2000' }}
+  {%- else -%}
+    <div class="iw-banner__img" style="background: linear-gradient(135deg, #2e3192 0%, #7c6b99 50%, #ce93d8 100%);"></div>
+  {%- endif -%}
+  <div class="iw-banner__overlay"></div>
+  <div class="iw-banner__content">
+    <p class="iw-banner__label">{{ section.settings.banner_label }}</p>
+    <h1 class="iw-banner__title">{{ section.settings.banner_title }}</h1>
+    <p class="iw-banner__subtitle">{{ section.settings.banner_subtitle }}</p>
+    {%- if section.settings.banner_btn != blank -%}
+      <a href="#iw-shop" class="iw-banner__btn">{{ section.settings.banner_btn }}</a>
+    {%- endif -%}
+  </div>
+</section>
+
+{%- comment -%} INTRO STRIP {%- endcomment -%}
+<section class="iw-intro">
+  <p class="iw-intro__tagline">{{ section.settings.intro_tagline }}</p>
+  <h2 class="iw-intro__heading">{{ section.settings.intro_heading }}</h2>
+  <div class="iw-intro__line"></div>
+</section>
+
+{%- comment -%} THREE PILLARS {%- endcomment -%}
+<div class="iw-pillars">
+  <div class="iw-pillar">
+    <div class="iw-pillar__number">01</div>
+    <p class="iw-pillar__title">Pharmacist-Guided</p>
+    <p class="iw-pillar__text">Every product is reviewed and recommended by our licensed pharmacist team.</p>
+  </div>
+  <div class="iw-pillar">
+    <div class="iw-pillar__number">02</div>
+    <p class="iw-pillar__title">Discreet & Personalized</p>
+    <p class="iw-pillar__text">Confidential consultations and packaging. Your privacy is never compromised.</p>
+  </div>
+  <div class="iw-pillar">
+    <div class="iw-pillar__number">03</div>
+    <p class="iw-pillar__title">Every Stage of Life</p>
+    <p class="iw-pillar__text">Inclusive solutions for adults of all ages — because wellness has no expiration date.</p>
+  </div>
+</div>
+
+{%- comment -%} BHRT SPLIT SECTION {%- endcomment -%}
+<section class="iw-split">
+  <div class="iw-split__image">
+    {%- if section.settings.bhrt_image != blank -%}
+      {{ section.settings.bhrt_image | image_url: width: 1000 | image_tag: loading: 'lazy', widths: '500,800,1000' }}
+    {%- else -%}
+      <div style="background: linear-gradient(135deg, #f0eaf5, #fce4ec); width:100%; height:100%; min-height:400px;"></div>
+    {%- endif -%}
+  </div>
+  <div class="iw-split__content">
+    <p class="iw-split__eyebrow">Perfectly Paired</p>
+    <h2 class="iw-split__heading">Designed to complement BHRT care.</h2>
+    <p class="iw-split__text">Our intimate wellness products work alongside Bioidentical Hormone Replacement Therapy for both men and women — supporting the whole picture, not just the numbers.</p>
+    <ul class="iw-split__list">
+      <li>Complements hormone therapy protocols</li>
+      <li>Supports comfort during hormonal transitions</li>
+      <li>Curated by compounding pharmacists</li>
+    </ul>
+  </div>
+</section>
+
+{%- comment -%} PRODUCTS {%- endcomment -%}
+{%- if section.settings.collection != blank -%}
+<section class="iw-products" id="iw-shop">
+  <p class="iw-products__label">Curated For You</p>
+  <h2 class="iw-products__heading">{{ section.settings.products_heading }}</h2>
+  <div class="iw-products__grid">
+    {%- for product in section.settings.collection.products limit: section.settings.products_to_show -%}
+      <div class="iw-product-card">
+        <div class="iw-product-card__img">
+          {%- if product.featured_image != blank -%}
+            <a href="{{ product.url }}">
+              <img src="{{ product.featured_image | image_url: width: 500 }}" alt="{{ product.featured_image.alt | escape }}" loading="lazy" width="500" height="500">
+            </a>
+          {%- endif -%}
+        </div>
+        <div class="iw-product-card__info">
+          <p class="iw-product-card__title"><a href="{{ product.url }}">{{ product.title }}</a></p>
+          <p class="iw-product-card__price">{{ product.price | money }}</p>
+        </div>
+      </div>
+    {%- endfor -%}
+  </div>
+  <a href="{{ section.settings.collection.url }}" class="iw-products__view-all">View All Products</a>
+</section>
+{%- endif -%}
+
+
+{% schema %}
+{
+  "name": "Intimate Wellness",
+  "settings": [
+    {
+      "type": "header",
+      "content": "Banner"
+    },
+    {
+      "type": "image_picker",
+      "id": "banner_image",
+      "label": "Banner image (full width)"
+    },
+    {
+      "type": "text",
+      "id": "banner_label",
+      "label": "Banner label",
+      "default": "Intimate Innovations"
+    },
+    {
+      "type": "text",
+      "id": "banner_title",
+      "label": "Banner title",
+      "default": "Wellness that goes <em>deeper.</em>"
+    },
+    {
+      "type": "text",
+      "id": "banner_subtitle",
+      "label": "Banner subtitle",
+      "default": "Expert-curated intimate wellness products to support comfort, confidence, and connection at every stage of life."
+    },
+    {
+      "type": "text",
+      "id": "banner_btn",
+      "label": "Banner button",
+      "default": "Explore Collection"
+    },
+    {
+      "type": "header",
+      "content": "Banner Layout"
+    },
+    {
+      "type": "select",
+      "id": "image_focus",
+      "label": "Image focus (vertical)",
+      "options": [
+        { "value": "top", "label": "Top" },
+        { "value": "25%", "label": "Upper" },
+        { "value": "center", "label": "Center" },
+        { "value": "75%", "label": "Lower" },
+        { "value": "bottom", "label": "Bottom" }
+      ],
+      "default": "center"
+    },
+    {
+      "type": "range",
+      "id": "banner_height",
+      "label": "Banner height (vh)",
+      "min": 30,
+      "max": 80,
+      "step": 5,
+      "default": 55
+    },
+    {
+      "type": "range",
+      "id": "banner_overlay",
+      "label": "Overlay darkness (%)",
+      "min": 0,
+      "max": 80,
+      "step": 5,
+      "default": 40
+    },
+    {
+      "type": "header",
+      "content": "Banner Text Sizes"
+    },
+    {
+      "type": "range",
+      "id": "label_size",
+      "label": "Label size (px)",
+      "min": 10,
+      "max": 24,
+      "step": 1,
+      "default": 12
+    },
+    {
+      "type": "range",
+      "id": "title_size",
+      "label": "Title size (px)",
+      "min": 24,
+      "max": 80,
+      "step": 2,
+      "default": 48
+    },
+    {
+      "type": "range",
+      "id": "subtitle_size",
+      "label": "Subtitle size (px)",
+      "min": 12,
+      "max": 24,
+      "step": 1,
+      "default": 16
+    },
+    {
+      "type": "header",
+      "content": "Banner Colors"
+    },
+    {
+      "type": "color",
+      "id": "label_color",
+      "label": "Label color",
+      "default": "#38c6f4"
+    },
+    {
+      "type": "color",
+      "id": "title_color",
+      "label": "Title color",
+      "default": "#ffffff"
+    },
+    {
+      "type": "color",
+      "id": "subtitle_color",
+      "label": "Subtitle color",
+      "default": "#ffffffd9"
+    },
+    {
+      "type": "header",
+      "content": "Banner Button"
+    },
+    {
+      "type": "range",
+      "id": "btn_size",
+      "label": "Button text size (px)",
+      "min": 10,
+      "max": 20,
+      "step": 1,
+      "default": 12
+    },
+    {
+      "type": "range",
+      "id": "btn_padding",
+      "label": "Button padding",
+      "min": 8,
+      "max": 24,
+      "step": 2,
+      "default": 14
+    },
+    {
+      "type": "color",
+      "id": "btn_bg",
+      "label": "Button background",
+      "default": "#ffffff00"
+    },
+    {
+      "type": "color",
+      "id": "btn_text_color",
+      "label": "Button text color",
+      "default": "#ffffff"
+    },
+    {
+      "type": "color",
+      "id": "btn_border",
+      "label": "Button border color",
+      "default": "#ffffff"
+    },
+    {
+      "type": "header",
+      "content": "Intro"
+    },
+    {
+      "type": "text",
+      "id": "intro_tagline",
+      "label": "Intro tagline",
+      "default": "Approachable. Discreet. Rooted in Healthcare."
+    },
+    {
+      "type": "text",
+      "id": "intro_heading",
+      "label": "Intro heading",
+      "default": "Because <strong>intimate wellness</strong> is essential to overall wellbeing."
+    },
+    {
+      "type": "range",
+      "id": "intro_tagline_size",
+      "label": "Intro tagline size (px)",
+      "min": 10,
+      "max": 24,
+      "step": 1,
+      "default": 12
+    },
+    {
+      "type": "range",
+      "id": "intro_heading_size",
+      "label": "Intro heading size (px)",
+      "min": 18,
+      "max": 48,
+      "step": 2,
+      "default": 28
+    },
+    {
+      "type": "header",
+      "content": "Three Pillars"
+    },
+    {
+      "type": "range",
+      "id": "pillar_number_size",
+      "label": "Number size (px)",
+      "min": 20,
+      "max": 60,
+      "step": 2,
+      "default": 40
+    },
+    {
+      "type": "range",
+      "id": "pillar_title_size",
+      "label": "Pillar title size (px)",
+      "min": 12,
+      "max": 24,
+      "step": 1,
+      "default": 16
+    },
+    {
+      "type": "range",
+      "id": "pillar_text_size",
+      "label": "Pillar text size (px)",
+      "min": 12,
+      "max": 20,
+      "step": 1,
+      "default": 14
+    },
+    {
+      "type": "header",
+      "content": "BHRT Section"
+    },
+    {
+      "type": "image_picker",
+      "id": "bhrt_image",
+      "label": "BHRT section image"
+    },
+    {
+      "type": "range",
+      "id": "bhrt_eyebrow_size",
+      "label": "BHRT eyebrow size (px)",
+      "min": 10,
+      "max": 20,
+      "step": 1,
+      "default": 11
+    },
+    {
+      "type": "range",
+      "id": "bhrt_heading_size",
+      "label": "BHRT heading size (px)",
+      "min": 18,
+      "max": 48,
+      "step": 2,
+      "default": 28
+    },
+    {
+      "type": "range",
+      "id": "bhrt_text_size",
+      "label": "BHRT text size (px)",
+      "min": 12,
+      "max": 20,
+      "step": 1,
+      "default": 15
+    },
+    {
+      "type": "header",
+      "content": "Products"
+    },
+    {
+      "type": "text",
+      "id": "products_heading",
+      "label": "Products heading",
+      "default": "Shop Intimate Wellness"
+    },
+    {
+      "type": "range",
+      "id": "products_label_size",
+      "label": "Products label size (px)",
+      "min": 10,
+      "max": 20,
+      "step": 1,
+      "default": 12
+    },
+    {
+      "type": "range",
+      "id": "products_heading_size",
+      "label": "Products heading size (px)",
+      "min": 20,
+      "max": 48,
+      "step": 2,
+      "default": 30
+    },
+    {
+      "type": "collection",
+      "id": "collection",
+      "label": "Product collection"
+    },
+    {
+      "type": "range",
+      "id": "products_to_show",
+      "label": "Products to show",
+      "min": 2,
+      "max": 8,
+      "step": 1,
+      "default": 4
+    },
+    {
+      "type": "header",
+      "content": "Bottom CTA"
+    },
+    {
+      "type": "text",
+      "id": "cta_label",
+      "label": "CTA button label",
+      "default": "Contact Us"
+    },
+    {
+      "type": "url",
+      "id": "cta_link",
+      "label": "CTA button link"
+    }
+  ],
+  "presets": [
+    {
+      "name": "Intimate Wellness"
+    }
+  ]
+}
+{% endschema %}
